@@ -1,14 +1,16 @@
 import { Text, View } from "react-native";
 import Colours from "@/constants/Colors";
 import ExerciseList from "@/components/ExerciseList";
+import TopBar from "@/components/TopBar";
 
 export default function Index() {
   return (
     <View
       style={styles.container}
     >
-      {/* <Text>Index</Text> */}
+      <TopBar />
       <ExerciseList />
+
 
     </View>
   );

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
-import ExerciseListView from './ExerciseListView';
+import ExerciseListItem from './ExerciseListItem';
 
 export default function ExerciseList() {
 
@@ -99,30 +99,36 @@ export default function ExerciseList() {
 
 
     return (
-        <View
+        <ScrollView
             style={styles.container}
+            contentContainerStyle={styles.exerciseList}
         >
-            <ThemedText>Edit components/ExerciseList.tsx to edit this screen.</ThemedText>
             {
                 data.map((ex, id) => {
                   console.log(ex.name);
                     return (
-                        <ExerciseListView key={id} exercise={ex}/>
+                        <ExerciseListItem key={id} exercise={ex}/>
                     )
                 })
             }
-        </View>
+        </ScrollView>
     );
 }
 
 const styles: any = {
     container: {
         width: '100%',
-        minHeight: '100%',
         overflowY: "scroll",
         backgroundColor: Colours.dark2,
         flex: 1,
         flexDirection: "column",
-        alignItems: "center",
     },
+
+    exerciseList: {
+        width: '100%',
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: 20,
+        paddingBottom: 20,
+    }
 }

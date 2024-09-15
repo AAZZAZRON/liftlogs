@@ -9,6 +9,8 @@ export default function RootLayout() {
           backgroundColor: Colours.black,
         },
         headerTintColor: '#FFFFFF',
+        headerShadowVisible: false,
+        
         headerTitleStyle: {
           fontWeight: 'bold',
         },

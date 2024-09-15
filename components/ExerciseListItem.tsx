@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 
-export default function ExerciseListView({ exercise }: { exercise: any }) {
+export default function ExerciseListItem({ exercise }: { exercise: any }) {
 
 
     return (
