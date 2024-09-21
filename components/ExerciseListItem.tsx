@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 
@@ -7,6 +7,7 @@ export default function ExerciseListItem({ exercise }: { exercise: any }) {
 
 
     return (
+      <TouchableOpacity onPress={() => console.log("HI")}>
         <View
             style={styles.container}
         >
@@ -21,6 +22,7 @@ export default function ExerciseListItem({ exercise }: { exercise: any }) {
             <ThemedText type="default" style={{textAlign: 'center'}}>Reps Since 03/13</ThemedText>
           </View>
         </View>
+      </TouchableOpacity>
     );
 }
 
