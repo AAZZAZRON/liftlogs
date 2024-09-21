@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from flask_restful import Api, Resource
+# https://www.youtube.com/watch?v=GMppyAPbLYk
 
 app = Flask(__name__)
 

@@ -20,7 +20,7 @@ export default function Index() {
 
 const styles: any = {
   container: {
-    backgroundColor: Colours.dark4,
+    backgroundColor: Colours.white,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

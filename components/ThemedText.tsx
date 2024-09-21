@@ -5,7 +5,7 @@ import Colours from '@/constants/Colors';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'big';
 };
 
 export function ThemedText({
@@ -15,7 +15,7 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: Colours.darkText, dark: Colours.lightText }, 'text');
+  const color = useThemeColor({ light: Colours.darkText, dark: Colours.darkText }, 'text');
 
   return (
     <Text
@@ -26,6 +26,7 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'big' ? styles.big : undefined,
         style,
       ]}
       {...rest}
@@ -35,7 +36,7 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 24,
   },
   defaultSemiBold: {
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     lineHeight: 32,
   },
@@ -56,6 +57,11 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontSize: 16,
     color: '#0a7ea4',
+  },
+  big: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    lineHeight: 40,
   },
 });
 

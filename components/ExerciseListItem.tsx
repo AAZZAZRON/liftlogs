@@ -10,9 +10,16 @@ export default function ExerciseListItem({ exercise }: { exercise: any }) {
         <View
             style={styles.container}
         >
-            <ThemedText>{exercise.name}</ThemedText>
-            <ThemedText>{exercise.logs[0].date}</ThemedText>
-            <ThemedText>{exercise.logs[0].comments}</ThemedText>
+          <View style={styles.left}>
+            <ThemedText type="title">{exercise.name}</ThemedText>
+            <ThemedText type="default">09/13 - 122x50, 122x50, 122x50</ThemedText>
+            <ThemedText type="default">09/13 - 12x50, 12x50, 12x50</ThemedText>
+            <ThemedText type="default">09/13 - 12x50, 12x50, 12x50</ThemedText>
+          </View>
+          <View style={styles.right}>
+            <ThemedText type="big">+13</ThemedText>
+            <ThemedText type="default" style={{textAlign: 'center'}}>Reps Since 03/13</ThemedText>
+          </View>
         </View>
     );
 }
@@ -20,13 +27,24 @@ export default function ExerciseListItem({ exercise }: { exercise: any }) {
 
 const styles: any = {
   container: {
-    width: '90%',
+    width: '93%',
     padding: 10,
-    margin: 10,
-    borderRadius: 30,
-    backgroundColor: Colours.dark4,
-    alignItems: "center",
+    margin: 8,
+    borderRadius: 20,
+    backgroundColor: Colours.y3,
+    flexDirection: 'row',
   },
+
+  left: {
+    width: '70%',    
+  },
+
+  right: {
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  }
 }
 
 

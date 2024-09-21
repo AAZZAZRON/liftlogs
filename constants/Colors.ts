@@ -1,14 +1,19 @@
 
 const Colours = {
-  dark1: '#A393BF',
-  dark2: '#9882AC',
-  dark3: '#73648A',
-  dark4: '#453750',
+  y1: '#FFF9EE',
+  y2: '#FCEED5',
+  y3: '#FFECC8',
+  y4: '#F7DBA7',
+  y5: '#FFD78E',
+
+
+  b4: '#002A48',
+
   black: '#0C0910',
   white: '#FFFFFF',
 
   lightText: '#FFFFFF',
-  darkText: '#000000',
+  darkText: '#002A48',
 }
 
 

@@ -24,7 +24,7 @@ const styles: any = {
   container: {
     width: '100%',
     paddingHorizontal: 10,
-    backgroundColor: Colours.dark4,
+    backgroundColor: Colours.y4,
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",

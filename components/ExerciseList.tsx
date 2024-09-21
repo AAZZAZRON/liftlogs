@@ -119,7 +119,7 @@ const styles: any = {
     container: {
         width: '100%',
         overflowY: "scroll",
-        backgroundColor: Colours.dark2,
+        backgroundColor: Colours.white,
         flex: 1,
         flexDirection: "column",
     },

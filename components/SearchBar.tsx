@@ -28,10 +28,10 @@ const styles: any = {
     searchContainer: {
         width: '100%',
         padding: 5,
-        backgroundColor: Colours.dark4,
+        backgroundColor: Colours.y4,
     },
     searchInput: {
-        backgroundColor: Colours.dark3,
+        backgroundColor: Colours.y3,
         borderRadius: 30,
     },
 }
