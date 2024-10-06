@@ -1,5 +1,5 @@
 from extensions import db
-from sqlalchemy.orm import registry
+from datetime import date
 
 
 class ExerciseModel(db.Model):
@@ -12,5 +12,7 @@ class ExerciseModel(db.Model):
 class EntryModel(db.Model):
     __tablename__ = 'entry'
     id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False, default=date.today())
     exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
     text = db.Column(db.String, nullable=True)
+    sets = db.Column(db.JSON)
