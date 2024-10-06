@@ -1,16 +1,16 @@
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 from extensions import db
-from sqlalchemy.orm import registry
+
+class Exercise(db.Model):
+    __tablename__ = "exercise"
+    id = mapped_column(Integer, primary_key=True)
+    name = mapped_column(String(50), nullable=False)
+    # logs
 
 
-class ExerciseModel(db.Model):
-    __tablename__ = 'exercise'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    logs = db.relationship("EntryModel", backref="exercise")
-
-
-class EntryModel(db.Model):
-    __tablename__ = 'entry'
-    id = db.Column(db.Integer, primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
-    text = db.Column(db.String, nullable=True)
+class Entry(db.Model):
+    __tablename__ = "entry"
+    id = mapped_column(Integer, primary_key=True)
+    text = mapped_column(String, nullable=False)
+    
