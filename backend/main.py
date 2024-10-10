@@ -41,7 +41,7 @@ entry_get_args.add_argument("num_entries", type=int, required=False, help="num_e
 
 entry_put_args = reqparse.RequestParser()
 entry_put_args.add_argument("text", type=str, help="Entry body is required", required=False, default=None)
-entry_put_args.add_argument("sets", type=list, location='json', help="Entry body is required", required=False, default=[])
+entry_put_args.add_argument("set", type=dict, help="Entry body is required", required=True)
 
 
 exercise_put_args = reqparse.RequestParser()
@@ -89,24 +89,22 @@ class GetEntries(Resource):
                 return {"message": "Invalid number of entries"}, 400
 
         return results, 200
-    
+
+
 class MakeEntry(Resource):
     @marshal_with(entry_fields)
-    def put(self, exercise_id):
-        # check for text and set fields
-        if request.get_json(silent=True) == None:
-            text = None
-            sets = []
-        else:
-            entry_args = entry_put_args.parse_args()    # WHY IS THIS BREAKING
-            text = entry_args.get("text")  # Optional text field
-            sets = entry_args.get("sets")
+    def post(self, exercise_id):
+        entry_args = entry_put_args.parse_args()    # WHY IS THIS BREAKING
+        text = entry_args.get("text")  # Optional text field
+        s = entry_args.get("set")
 
         # if an entry already exists today
-        if EntryModel.query.filter_by(date=date.today()).first():
-            abort(409, description="Entry for today already created")
-
-        entry = EntryModel(exercise_id=exercise_id, text=text, sets=sets)
+        entry = EntryModel.query.filter_by(date=date.today()).first()
+        if entry:
+            entry.sets.append(s)
+        else:
+            entry = EntryModel(exercise_id=exercise_id, text=text, sets=[s])
+        
         db.session.add(entry)
         db.session.commit()
         return entry, 201
@@ -122,3 +120,4 @@ api.add_resource(GetEntries, "/exercise/<int:exercise_id>/entries/<num_entries>"
 
 if __name__ == "__main__":
     app.run(debug=True)
+
