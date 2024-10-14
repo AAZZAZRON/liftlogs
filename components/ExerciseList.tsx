@@ -1,100 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import ExerciseListItem from './ExerciseListItem';
+import axios from 'axios';
+import { ExerciseObject } from '@/constants/types';
+
 
 export default function ExerciseList() {
+    const [data, setData] = useState([]);
+    const BASE = process.env.API_URL;
+    // console.log(BASE);
 
-    var data = [
-        {
-          id: 1,
-          name: "Bench Press",
-          logs: [
-            {
-              date: "2021-09-03",
-              sets: {
-                1: {
-                  reps: 12,
-                  weight: 70
-                },
-                2: {
-                  reps: 12,
-                  weight: 50
-                },
-                3: {
-                  reps: 12,
-                  weight: 50
-                }
-              },
-              comments: "This was a good workout"
-            },
-            {
-              date: "2021-09-01",
-              sets: {
-                1: {
-                  reps: 12,
-                  weight: 50
-                },
-                2: {
-                  reps: 12,
-                  weight: 50
-                },
-                3: {
-                  reps: 12,
-                  weight: 50
-                }
-              },
-              comments: "This was a good workout 2"
-            }
-          ],
-        },
-        {
-          id: 2,
-          name: "Squat",
-          logs: [
-            {
-              date: "2021-09-03",
-              sets: {
-                1: {
-                  reps: 12,
-                  weight: 70
-                },
-                2: {
-                  reps: 12,
-                  weight: 50
-                },
-                3: {
-                  reps: 12,
-                  weight: 50
-                }
-              },
-              comments: "This was a good workout"
-            },
-            {
-              date: "2021-09-01",
-              sets: {
-                1: {
-                  reps: 12,
-                  weight: 50
-                },
-                2: {
-                  reps: 12,
-                  weight: 50
-                },
-                3: {
-                  reps: 12,
-                  weight: 50
-                }
-              },
-              comments: "This was a good workout 2"
-            }
-          ],
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get('http://10.0.0.211:5000/exercise/all');
+            if (response) setData(response.data);
+            console.log(data);
         }
-    ];
-    data = data.concat(data);
-    data = data.concat(data);
-    data = data.concat(data);
+        fetchData().catch(console.error);
+    }, []);
 
 
 
@@ -103,12 +29,10 @@ export default function ExerciseList() {
             style={styles.container}
             contentContainerStyle={styles.exerciseList}
         >
-            {
-                data.map((ex, id) => {
-                  console.log(ex.name);
-                    return (
-                        <ExerciseListItem key={id} exercise={ex}/>
-                    )
+            { 
+                data.map((ex: ExerciseObject, id) => {
+                    console.log(ex.name);
+                    return <ExerciseListItem key={id} exercise={ex}/>
                 })
             }
         </ScrollView>

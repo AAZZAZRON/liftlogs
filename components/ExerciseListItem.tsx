@@ -1,28 +1,45 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
+import { EntryObject, ExerciseObject, SetObject } from '@/constants/types';
 
-export default function ExerciseListItem({ exercise }: { exercise: any }) {
+function parseEntry(entry: EntryObject): string {
+    let s = entry.date.toString().substring(5).replace('-', '/');
+    let arr = entry.sets.map((set: SetObject) => {return `${set.reps}x${set.weight}`}); 
+    console.log(entry);
+    return s + ' - ' + arr.join(", ");
+}
 
+export default function ExerciseListItem({ exercise }: { exercise: ExerciseObject }) {
+    const [firstEntries, setFirstEntries] = useState<EntryObject[]>();
 
+    useEffect(() => {
+        if (exercise.logs) setFirstEntries(exercise.logs.slice(0, 3));
+    }, []);
+
+    
     return (
-      <TouchableOpacity onPress={() => console.log("HI")}>
-        <View
-            style={styles.container}
-        >
-          <View style={styles.left}>
-            <ThemedText type="title">{exercise.name}</ThemedText>
-            <ThemedText type="default">09/13 - 122x50, 122x50, 122x50</ThemedText>
-            <ThemedText type="default">09/13 - 12x50, 12x50, 12x50</ThemedText>
-            <ThemedText type="default">09/13 - 12x50, 12x50, 12x50</ThemedText>
-          </View>
-          <View style={styles.right}>
-            <ThemedText type="big">+13</ThemedText>
-            <ThemedText type="default" style={{textAlign: 'center'}}>Reps Since 03/13</ThemedText>
-          </View>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log("HI")}>
+            <View
+                style={styles.container}
+            >
+            <View style={styles.left}>
+                <ThemedText type="title">{exercise.name}</ThemedText>
+                {
+                    (firstEntries !== undefined) ? 
+                        (firstEntries.map((entry: EntryObject, id) => {
+                            return <ThemedText type='default' key={id}>{parseEntry(entry)}</ThemedText>
+                        }))
+                    : <ThemedText type='default'>No logs yet...</ThemedText>
+                }
+            </View>
+            <View style={styles.right}>
+                <ThemedText type="big">+13</ThemedText>
+                <ThemedText type="default" style={{textAlign: 'center'}}>Reps Since 03/13</ThemedText>
+            </View>
+            </View>
+        </TouchableOpacity>
     );
 }
 

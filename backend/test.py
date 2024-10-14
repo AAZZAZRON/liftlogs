@@ -16,7 +16,7 @@ headers = {
 # response = requests.post(BASE + f"exercise/1/entries/create", headers=headers, json={"set": {"reps": 12, "weight": 69}})
 # print(response.json())
 
-# response = requests.get(BASE + "exercise/2", headers=headers)
+# response = requests.get(BASE + "exercise/all", headers=headers)
 # print(response.json())
 
 # response = requests.get(BASE + "exercise/1", headers=headers)
