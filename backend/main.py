@@ -99,9 +99,12 @@ class MakeEntry(Resource):
         s = entry_args.get("set")
 
         # if an entry already exists today
-        entry = EntryModel.query.filter_by(date=date.today()).first()
+        entry = EntryModel.query.filter_by(exercise_id=exercise_id, date=date.today()).first()
+        exercise = ExerciseModel.query.filter_by(id=exercise_id).first()
         if entry:
             entry.sets.append(s)
+        elif not exercise:
+            abort(404, description="No exercise with that ID exists")
         else:
             entry = EntryModel(exercise_id=exercise_id, text=text, sets=[s])
         
@@ -120,4 +123,5 @@ api.add_resource(GetEntries, "/exercise/<int:exercise_id>/entries/<num_entries>"
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
