@@ -7,23 +7,8 @@ import axios from 'axios';
 import { ExerciseObject } from '@/constants/types';
 
 
-export default function ExerciseList() {
-    const [data, setData] = useState([]);
-    const BASE = process.env.API_URL;
-    // console.log(BASE);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get('http://10.0.0.211:5000/exercise/all');
-            if (response) setData(response.data);
-            console.log(data);
-        }
-        fetchData().catch(console.error);
-    }, []);
-
-
-
+export default function ExerciseList({data}: {data: ExerciseObject[]}) {
+    
     return (
         <ScrollView
             style={styles.container}

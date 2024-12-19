@@ -1,16 +1,20 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { SearchBar } from '@rneui/base';
 import { View } from 'react-native';
 import Colours from '@/constants/Colors';
+import { ExerciseObject } from '@/constants/types';
 
 // https://reactnativeelements.com/docs/components/searchbar
 
-export default function MySearchBar() {
-    const [search, setSearch] = React.useState('');
+export default function MySearchBar({data, setDatalist}: {data: ExerciseObject[], setDatalist: (data: any) => void}) {
+    const [search, setSearch] = useState('');
 
     const updateSearch = (search: string) => {
         setSearch(search);
+        var filteredData = data.filter((exercise) => search === '' || exercise.name.includes(search));
+        setDatalist(filteredData);
     }
 
     return (

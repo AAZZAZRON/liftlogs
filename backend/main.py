@@ -13,6 +13,7 @@ app = Flask(__name__)
 api = Api(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
+CORS(app)
 
 
 # create db table
@@ -57,7 +58,6 @@ entry_put_args.add_argument("set", type=dict, help="Entry body is required", req
 
 exercise_put_args = reqparse.RequestParser()
 exercise_put_args.add_argument("name", type=str, help="Name of exercise is required", required=True)
-
 
 
 class Exercise(Resource):
@@ -132,9 +132,6 @@ class MakeEntry(Resource):
         db.session.commit()
         return entry, 201
 
-
-
-
 api.add_resource(Exercise, "/exercise/<exercise_id>")
 api.add_resource(ExerciseCreate, "/exercise/create")
 api.add_resource(MakeEntry, "/exercise/<int:exercise_id>/entries/create")
@@ -143,7 +140,5 @@ api.add_resource(GetEntries, "/exercise/<int:exercise_id>/entries/<num_entries>"
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
-
-CORS(app)
 
 
