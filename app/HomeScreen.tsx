@@ -29,12 +29,11 @@ export default function HomeScreen() {
       if (isLoading) fetchData().catch(console.error);
   }, [isLoading]);
 
-  useFocusEffect(
+  
+  useFocusEffect( // reload on refocus
     useCallback(() => {
-      console.log("focus");
       reload();
       return () => {
-        console.log("unfocus")
       };
     }, [])
   );
