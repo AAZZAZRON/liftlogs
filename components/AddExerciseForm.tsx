@@ -28,7 +28,10 @@ export default function AddExerciseForm({visible, setVisible}: {visible: boolean
             };
         }
 
-        putData().catch((error) => {console.log(error.toJSON());}); // TODO: fix this error, no description found
+        putData().catch((error) => {
+            // console.error(error.response.status, error.response.data);
+            Alert.alert(`Error Code ${error.response.status}`, error.response.data.description);
+        });
     };
 
 

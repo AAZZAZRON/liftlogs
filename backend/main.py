@@ -87,7 +87,7 @@ class ExerciseCreate(Resource):
 
         if ExerciseModel.query.filter_by(name=exercise_args["name"]).first():
             abort(409, description="Exercise already exists")
-
+        
         exercise = ExerciseModel(name=exercise_args["name"])
         db.session.add(exercise)
         db.session.commit()
