@@ -3,15 +3,17 @@ import { TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import { EntryObject, ExerciseObject, SetObject } from '@/constants/types';
+import { useRouter } from 'expo-router';
 
 function parseEntry(entry: EntryObject): string {
     let s = entry.date.toString().substring(5).replace('-', '/');
     let arr = entry.sets.map((set: SetObject) => {return `${set.reps}x${set.weight}`}); 
-    console.log(entry);
     return s + ' - ' + arr.join(", ");
 }
 
 export default function ExerciseListItem({ exercise }: { exercise: ExerciseObject }) {
+    const router = useRouter();
+
     const [firstEntries, setFirstEntries] = useState<EntryObject[]>();
 
     useEffect(() => {
@@ -20,7 +22,7 @@ export default function ExerciseListItem({ exercise }: { exercise: ExerciseObjec
 
     
     return (
-        <TouchableOpacity onPress={() => console.log("HI")}>
+        <TouchableOpacity onPress={() => router.push({pathname: `/ExerciseScreen`, params: {name: exercise.name, id: exercise.id}})}>
             <View
                 style={styles.container}
             >

@@ -1,7 +1,9 @@
 import { Stack } from "expo-router";
 import Colours from "@/constants/Colors";
+import { useGlobalSearchParams } from "expo-router/build/hooks";
 
 export default function RootLayout() {
+  const params = useGlobalSearchParams();
   return (
     <Stack
       screenOptions={{
@@ -19,10 +21,9 @@ export default function RootLayout() {
       }}
       // https://reactnavigation.org/docs/stack-navigator
     >
-      <Stack.Screen name="index" 
-        options={{
-          title: "Home",
-        }}
+      <Stack.Screen name="HomeScreen" options={{title: "Home"}} />
+      <Stack.Screen name="ExerciseScreen" 
+        options={{title: Array.isArray(params.name) ? params.name[0] : params.name || "Exercise"}}
       />
     </Stack>
   );

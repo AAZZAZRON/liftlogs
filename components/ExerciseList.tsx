@@ -8,7 +8,6 @@ import { ExerciseObject } from '@/constants/types';
 
 
 export default function ExerciseList({data}: {data: ExerciseObject[]}) {
-    
     return (
         <ScrollView
             style={styles.container}
@@ -16,7 +15,7 @@ export default function ExerciseList({data}: {data: ExerciseObject[]}) {
         >
             { 
                 data.map((ex: ExerciseObject, id) => {
-                    console.log(ex.name);
+                    // console.log(ex.name);
                     return <ExerciseListItem key={id} exercise={ex}/>
                 })
             }
