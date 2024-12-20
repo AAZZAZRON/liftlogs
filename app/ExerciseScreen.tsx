@@ -4,11 +4,15 @@ import { ThemedText } from "@/components/ThemedText";
 import { View, ScrollView } from "react-native";
 import axios from "axios";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
+import Colours from "@/constants/Colors";
+import AddSetForm from "@/components/AddSetForm";
+import Loading from "@/components/Loading";
 
 
 export default function ExerciseScreen() {
     const params = useGlobalSearchParams();
     const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,15 +20,36 @@ export default function ExerciseScreen() {
             if (response) {
                 setData(response.data);
             }
-            console.log(response.data);
+            setIsLoading(false);
         }
-        fetchData().catch(console.error);
-    }, []);
+        if (isLoading) fetchData().catch(console.error);
+    }, [isLoading]);
+
+
 
 
     return (
-        <View>
-            <ThemedText>{JSON.stringify(data)}</ThemedText>
-        </View>
+        isLoading
+        ?
+            <Loading />
+        :
+            <View style={styles.container}>
+                <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} setIsLoading={setIsLoading}/>
+                <ThemedText>{JSON.stringify(data)}</ThemedText>
+            </View>
     )
 }
+
+
+
+
+const styles: any = {
+    container: {
+      backgroundColor: Colours.white,
+      flex: 1,
+      alignItems: "center",
+    },
+  }
+  
+  
+  

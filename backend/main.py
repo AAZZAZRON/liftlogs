@@ -51,9 +51,9 @@ exercise_fields = {
 entry_get_args = reqparse.RequestParser()
 entry_get_args.add_argument("num_entries", type=int, required=False, help="num_entries must be an integer")
 
-entry_put_args = reqparse.RequestParser()
-entry_put_args.add_argument("text", type=str, help="Entry body is required", required=False, default=None)
-entry_put_args.add_argument("set", type=dict, help="Entry body is required", required=True)
+entry_post_args = reqparse.RequestParser()
+entry_post_args.add_argument("text", type=str, help="Entry body is required", required=False, default=None)
+entry_post_args.add_argument("set", type=dict, help="Entry body is required", required=True)
 
 
 exercise_put_args = reqparse.RequestParser()
@@ -114,9 +114,11 @@ class GetEntries(Resource):
 class MakeEntry(Resource):
     @marshal_with(entry_fields)
     def post(self, exercise_id):
-        entry_args = entry_put_args.parse_args()    # WHY IS THIS BREAKING
+        entry_args = entry_post_args.parse_args() 
         text = entry_args.get("text")  # Optional text field
         s = entry_args.get("set")
+
+        print(text, s)
 
         # if an entry already exists today
         entry = EntryModel.query.filter_by(exercise_id=exercise_id, date=date.today()).first()
