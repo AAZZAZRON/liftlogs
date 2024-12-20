@@ -14,6 +14,8 @@ export default function ExerciseScreen() {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const reload = () => setIsLoading(true);
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`http://10.0.0.211:5000/exercise/${params.id}`);
@@ -25,16 +27,13 @@ export default function ExerciseScreen() {
         if (isLoading) fetchData().catch(console.error);
     }, [isLoading]);
 
-
-
-
     return (
         isLoading
         ?
             <Loading />
         :
             <View style={styles.container}>
-                <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} setIsLoading={setIsLoading}/>
+                <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} reload={reload}/>
                 <ThemedText>{JSON.stringify(data)}</ThemedText>
             </View>
     )

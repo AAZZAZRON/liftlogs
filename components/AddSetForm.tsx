@@ -7,7 +7,7 @@ import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
 
 
-export default function AddSetForm({id, setIsLoading}: {id: string, setIsLoading: (b: boolean) => void}) {
+export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
     const [isOpen, setIsOpen] = useState(false);
     const [weightUnits, setWeightUnits] = useState('lb');
     const [formData, setFormData] = useState({
@@ -33,7 +33,7 @@ export default function AddSetForm({id, setIsLoading}: {id: string, setIsLoading
             const response = await axios.post(`http://10.0.0.211:5000/exercise/${id}/entries/create`, {set: formData});
             if (response) {
                 Alert.alert('Set Created Succesfully', "Your set has been successfully created");
-                setIsLoading(true);
+                reload();
             };
         }
 

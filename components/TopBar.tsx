@@ -9,7 +9,7 @@ import AddExerciseForm from './AddExerciseForm';
 
 
 
-export default function TopBar({data, setDatalist}: {data: ExerciseObject[], setDatalist: (data: any) => void}) {
+export default function TopBar({data, setDatalist, reload}: {data: ExerciseObject[], setDatalist: (data: any) => void, reload: () => void}) {
     const [addFormVisible, setAddFormVisible] = useState(false);
 
     return (
@@ -20,7 +20,7 @@ export default function TopBar({data, setDatalist}: {data: ExerciseObject[], set
                 <MySearchBar data={data} setDatalist={setDatalist} />
             </View>
             <Button title="Add" onPress={() => setAddFormVisible(true)}/>
-            <AddExerciseForm visible={addFormVisible} setVisible={setAddFormVisible}/>
+            <AddExerciseForm visible={addFormVisible} setVisible={setAddFormVisible} reload={reload} />
         </View>
     );
 }

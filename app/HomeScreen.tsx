@@ -1,33 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Text, View } from "react-native";
 import Colours from "@/constants/Colors";
 import ExerciseList from "@/components/ExerciseList";
 import TopBar from "@/components/TopBar";
-import { useGlobalSearchParams } from "expo-router/build/hooks";
+import { useLocalSearchParams } from "expo-router/build/hooks";
 import Loading from "@/components/Loading";
+import { useFocusEffect } from "expo-router";
 
 
 export default function HomeScreen() {
-  const params = useGlobalSearchParams();
-
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [datalist, setDatalist] = useState([]); // what the Exercise list gets
 
-  useEffect(() => {
-      console.log("reload", params.reload);
-      const fetchData = async () => {
-          const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
-          if (response) {
-            setData(response.data);
-            setDatalist(response.data);
-          }
-      }
-      fetchData().catch(console.error);
-      setIsLoading(false);
-  }, [params.reload]);
+  const reload = () => setIsLoading(true);
 
+  useEffect(() => {
+      console.log("loading", isLoading);
+      const fetchData = async () => {
+        const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
+        if (response) {
+          setData(response.data);
+          setDatalist(response.data);
+        }
+        setIsLoading(false);
+      }
+      if (isLoading) fetchData().catch(console.error);
+  }, [isLoading]);
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("focus");
+      reload();
+      return () => {
+        console.log("unfocus")
+      };
+    }, [])
+  );
 
   return (
     isLoading ? 
@@ -36,7 +46,7 @@ export default function HomeScreen() {
       <View
         style={styles.container}
       >
-        <TopBar data={data} setDatalist={setDatalist} />
+        <TopBar data={data} setDatalist={setDatalist} reload={reload}/>
         <ExerciseList data={datalist} />
       </View>
   );
