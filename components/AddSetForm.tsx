@@ -13,6 +13,7 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
     const [formData, setFormData] = useState({
         reps: '10',
         weight: '45',
+        notes: '',
     });
 
     const updateForm = (field: string, value: string) => {
@@ -94,7 +95,8 @@ const styles: any = {
     container: {
         width: '100%',
         padding: 10,
-        margin: 10,
+        marginHorizontal: 10,
+        marginTop: 10,
         backgroundColor: 'white',
         alignItems: 'center',
     },

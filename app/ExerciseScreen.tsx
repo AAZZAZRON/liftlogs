@@ -1,17 +1,20 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, ImageBackgroundComponent } from "react-native";
 import axios from "axios";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
 import Colours from "@/constants/Colors";
 import AddSetForm from "@/components/AddSetForm";
 import Loading from "@/components/Loading";
+import { EntryObject } from "@/constants/types";
+import EntryItem from "@/components/EntryItem";
 
 
 export default function ExerciseScreen() {
     const params = useGlobalSearchParams();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<{ logs: EntryObject[] } | null>(null);
+    const [logs, setLogs] = useState<EntryObject[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const reload = () => setIsLoading(true);
@@ -25,6 +28,9 @@ export default function ExerciseScreen() {
             setIsLoading(false);
         }
         if (isLoading) fetchData().catch(console.error);
+        else {
+            if (data?.logs) setLogs(data.logs.reverse());
+        }
     }, [isLoading]);
 
     return (
@@ -34,7 +40,17 @@ export default function ExerciseScreen() {
         :
             <View style={styles.container}>
                 <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} reload={reload}/>
-                <ThemedText>{JSON.stringify(data)}</ThemedText>
+                <ScrollView style={styles.cardContainer}>
+                    <ThemedText type={'subtitle'}>Recent Logs</ThemedText>
+                    <View style={styles.entryItems}>
+                        { 
+                            logs.map((en: EntryObject, id) => {
+                                // console.log(ex.name);
+                                return <EntryItem key={id} entry={en}/>
+                            })
+                        }
+                    </View>
+                </ScrollView>
             </View>
     )
 }
@@ -44,10 +60,24 @@ export default function ExerciseScreen() {
 
 const styles: any = {
     container: {
-      backgroundColor: Colours.white,
-      flex: 1,
-      alignItems: "center",
+        backgroundColor: Colours.white,
+        flex: 1,
+        alignItems: "center",
     },
+    cardContainer: {
+        height: '100%',
+        width: '100%',
+        padding: 10,
+    },
+    
+    entryItems: {
+        width: '100%',
+        flexDirection: "column",
+        alignItems: "center",
+        // paddingTop: 20,
+        paddingBottom: 20,
+    }
+
   }
   
   

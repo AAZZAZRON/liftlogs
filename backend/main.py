@@ -32,6 +32,7 @@ class DateField(fields.Raw): # custom date field
 set_fields = {
     "reps": fields.Integer,
     "weight": fields.Float,
+    "notes": fields.String
 }
 
 entry_fields = {
