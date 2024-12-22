@@ -26,14 +26,15 @@ export default function EntryItem({entry}: {entry: EntryObject}) {
 }
 
 export function SetItem({set}: {set: SetObject}) {
-    const notes = set.notes;
+    const notes = set.notes || '';
+    const units = set.units || 'lbs'; 
     return (
         <View style={styles.setContainer}>
             <View style={styles.setContainerLeft}>
-                <ThemedText>- {set.reps}x{set.weight}lbs</ThemedText>
+                <ThemedText style={styles.setText}>- {set.reps} x {set.weight}{units}</ThemedText>
             </View>
             <View style={styles.setContainerRight}>
-                {(notes === '' || notes === null || notes === undefined) ? <></> : <ThemedText style={styles.notesText}>Notes: {notes}</ThemedText>}
+                {(notes === '') ? <></> : <ThemedText style={styles.notesText}>Notes: {notes}</ThemedText>}
             </View>
         </View>
     )
@@ -58,8 +59,8 @@ const styles: any = {
     },
     
     setContainerLeft: {
-        width: '30%',
-        alignItems: 'center',
+        width: '35%',
+        // alignItems: 'center',
         // justifyContent: 'center',
         paddingRight: 10,
     },
@@ -70,8 +71,11 @@ const styles: any = {
         justifyContent: 'center',
         flexDirection: 'column',
     },
+    setText: {
+        lineHeight: 19,
+    },
     notesText: {
         color: 'gray',
-        lineHeight: 17,
+        lineHeight: 19,
     }
 }

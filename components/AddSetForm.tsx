@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Pressable, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, Button, Pressable, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '@/constants/Colors';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
 
 
 export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [weightUnits, setWeightUnits] = useState('lb');
     const [formData, setFormData] = useState({
         reps: '10',
         weight: '45',
+        units: 'lbs',
         notes: '',
     });
 
@@ -51,36 +51,49 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
                     <TouchableOpacity style={styles.closeSlider} onPress={() => setIsOpen(false)}>
                         <Text style={styles.buttonText}>Close</Text>
                     </TouchableOpacity>
-                    <View style={styles.formContainer}>
-                        <View style={styles.formEntry}>
-                            <Text style={styles.label}>Reps: </Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="10"
-                                value={formData.reps}
-                                onChangeText={(value: string) => updateForm('reps', value)}
-                            />
-                        </View>
-                        <View style={styles.formEntry}>
-                            <Text style={styles.label}>Weight: </Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="45lb"
-                                value={formData.weight}
-                                onChangeText={(value: string) => updateForm('weight', value)}
-                            />
-                        </View>
-                        <RadioButton.Group onValueChange={(units) => setWeightUnits(units)} value={weightUnits}>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                        <View style={styles.formContainer}>
                             <View style={styles.formEntry}>
-                                <RadioButton.Item style={styles.radioButton} label="lb" value="lb" />
-                                <RadioButton.Item style={styles.radioButton} label="kg" value="kg" />
+                                <Text style={styles.label}>Reps: </Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="10"
+                                    value={formData.reps}
+                                    keyboardType="numeric"
+                                    onChangeText={(value: string) => updateForm('reps', value)}
+                                />
                             </View>
-                        </RadioButton.Group>
-
-                        <TouchableOpacity style={styles.submitButton} onPress={submitForm}>
-                            <Text style={styles.buttonText}>Submit New Set</Text>
-                        </TouchableOpacity>
-                    </View>
+                            <View style={styles.formEntry}>
+                                <Text style={styles.label}>Weight: </Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="45lb"
+                                    value={formData.weight}
+                                    keyboardType="numeric"
+                                    onChangeText={(value: string) => updateForm('weight', value)}
+                                />
+                            </View>
+                            <RadioButton.Group onValueChange={(units) => updateForm('units', units)} value={formData.units}>
+                                <View style={styles.formEntry}>
+                                    <RadioButton.Item style={styles.radioButton} label="lbs" value="lbs" />
+                                    <RadioButton.Item style={styles.radioButton} label="kg" value="kg" />
+                                </View>
+                            </RadioButton.Group>
+                            <View style={styles.formEntry}>
+                                <Text style={styles.label}>Notes: </Text>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder=""
+                                    value={formData.notes}
+                                    multiline={true}
+                                    onChangeText={(value: string) => updateForm('notes', value)}
+                                />
+                            </View>
+                            <TouchableOpacity style={styles.submitButton} onPress={submitForm}>
+                                <Text style={styles.buttonText}>Submit New Set</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             :
                 <TouchableOpacity style={styles.addSetButton} onPress={() => setIsOpen(true)}>
@@ -169,6 +182,16 @@ const styles: any = {
         fontSize: 16,
     },
     input: {
+        height: 40,
+        width: '50%',
+        overflow: 'hidden',
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+    },
+    textInput: {
         height: 40,
         width: '50%',
         overflow: 'hidden',

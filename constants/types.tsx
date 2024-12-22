@@ -1,6 +1,7 @@
 export type SetObject = {
     reps: number,
     weight: number,
+    units: string,
     notes: string,
 }
 
