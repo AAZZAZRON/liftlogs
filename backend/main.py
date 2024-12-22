@@ -1,11 +1,13 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from sqlalchemy.orm import DeclarativeBase
+from flask import Flask
+from flask_restful import Api, Resource, reqparse, abort, marshal_with
 from extensions import db
 from models import ExerciseModel, EntryModel
 from datetime import date
 from flask_cors import CORS
+from fields import *
+from routes.exercise_routes import * 
+from routes.workout_routes import * 
+
 
 
 # initialize flask app
@@ -22,33 +24,7 @@ with app.app_context():
 
 
 
-class DateField(fields.Raw): # custom date field
-    def format(self, value):
-        if isinstance(value, date):
-            return value.isoformat()  # Convert to 'YYYY-MM-DD' format
-        raise fields.MarshallingException('Unsupported field type')
-
-
-set_fields = {
-    "reps": fields.Integer,
-    "weight": fields.Float,
-    "units": fields.String,
-    "notes": fields.String
-}
-
-entry_fields = {
-    "id": fields.Integer,
-    "date": DateField,
-    "exercise_id": fields.Integer,
-    "text": fields.String,
-    "sets": fields.List(fields.Nested(set_fields))
-}
-
-exercise_fields = {
-    "id": fields.Integer,
-    "name": fields.String,
-    "logs": fields.List(fields.Nested(entry_fields))
-}
+# ----- Reqparser Arguments ----- #
 
 entry_get_args = reqparse.RequestParser()
 entry_get_args.add_argument("num_entries", type=int, required=False, help="num_entries must be an integer")
@@ -57,43 +33,6 @@ entry_post_args = reqparse.RequestParser()
 entry_post_args.add_argument("text", type=str, help="Entry body is required", required=False, default=None)
 entry_post_args.add_argument("set", type=dict, help="Entry body is required", required=True)
 
-
-exercise_put_args = reqparse.RequestParser()
-exercise_put_args.add_argument("name", type=str, help="Name of exercise is required", required=True)
-
-
-class Exercise(Resource):
-    @marshal_with(exercise_fields)
-    def get(self, exercise_id):
-        if exercise_id == "all":
-            result = ExerciseModel.query.all()
-        else:
-            try:
-                exercise_id = int(exercise_id)
-                if exercise_id <= 0:
-                    raise ValueError
-                result = ExerciseModel.query.filter_by(id=exercise_id).first()
-            except ValueError:
-                return {"message": "Invalid id number"}, 400
-        
-        if not result:
-            abort(404, description="Exercise does not exist")
-
-        return result
-
-
-class ExerciseCreate(Resource):
-    @marshal_with(exercise_fields)
-    def put(self):
-        exercise_args = exercise_put_args.parse_args()
-
-        if ExerciseModel.query.filter_by(name=exercise_args["name"]).first():
-            abort(409, description="Exercise already exists")
-        
-        exercise = ExerciseModel(name=exercise_args["name"])
-        db.session.add(exercise)
-        db.session.commit()
-        return exercise, 201
 
 
 class GetEntries(Resource):
@@ -136,13 +75,16 @@ class MakeEntry(Resource):
         db.session.commit()
         return entry, 201
 
-api.add_resource(Exercise, "/exercise/<exercise_id>")
-api.add_resource(ExerciseCreate, "/exercise/create")
+api.add_resource(GetExercise, "/exercise/<exercise_id>")
+api.add_resource(CreateExercise, "/exercise/create")
+
+api.add_resource(StartWorkout, "/workouts/start")
+api.add_resource(EndWorkout, "/workouts/end")
+api.add_resource(GetWorkout, "/workouts/<workout_id>")
+
 api.add_resource(MakeEntry, "/exercise/<int:exercise_id>/entries/create")
 api.add_resource(GetEntries, "/exercise/<int:exercise_id>/entries/<num_entries>")
 
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
-
-
