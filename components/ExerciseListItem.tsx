@@ -17,7 +17,7 @@ export default function ExerciseListItem({ exercise }: { exercise: ExerciseObjec
     const [firstEntries, setFirstEntries] = useState<EntryObject[]>();
 
     useEffect(() => {
-        if (exercise.logs) setFirstEntries(exercise.logs.slice(0, 3));
+        if (exercise.logs) setFirstEntries(exercise.logs.reverse().slice(0, 3));
     }, []);
 
     

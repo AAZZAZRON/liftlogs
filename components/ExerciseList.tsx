@@ -13,7 +13,8 @@ export default function ExerciseList({data}: {data: ExerciseObject[]}) {
             style={styles.container}
             contentContainerStyle={styles.exerciseList}
         >
-            { 
+            { data === undefined || data.length === 0 ? <ThemedText>No exercises...</ThemedText>
+            :
                 data.map((ex: ExerciseObject, id) => {
                     // console.log(ex.name);
                     return <ExerciseListItem key={id} exercise={ex}/>

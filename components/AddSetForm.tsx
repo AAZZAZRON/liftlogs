@@ -193,7 +193,7 @@ const styles: any = {
     },
     textInput: {
         height: 40,
-        width: '50%',
+        width: '70%',
         // overflow: 'hidden',
         borderColor: '#ccc',
         borderWidth: 1,
