@@ -194,10 +194,11 @@ const styles: any = {
     textInput: {
         height: 40,
         width: '50%',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 5,
+        paddingVertical: 10,
         paddingHorizontal: 10,
         backgroundColor: 'white',
     }
