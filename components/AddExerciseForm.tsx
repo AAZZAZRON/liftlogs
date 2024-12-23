@@ -3,7 +3,7 @@ import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { View, Button, Text, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
-import { useRouter } from 'expo-router';
+
 
 export default function AddExerciseForm({visible, setVisible, reload}: {visible: boolean, setVisible: (b: boolean) => void, reload: () => void}) {
     const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ export default function AddExerciseForm({visible, setVisible, reload}: {visible:
         }
 
         const putData = async () => {
-            const response = await axios.put(`http://10.0.0.211:5000/exercise/create`, formData);
+            const response = await axios.post(`http://10.0.0.211:5000/exercise/create`, formData);
             if (response) {
                 Alert.alert('Exercise Created', `${name} has been successfully created`);
                 reload();

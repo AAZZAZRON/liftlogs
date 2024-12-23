@@ -35,7 +35,7 @@ class GetExercise(Resource):
             except ValueError:
                 return {"message": "Invalid id number"}, 400
         
-        if not result:
+        if not result and exercise_id != "all":
             abort(404, description="Exercise does not exist")
 
-        return result
+        return result, 201

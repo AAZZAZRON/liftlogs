@@ -8,9 +8,9 @@ from fields import set_fields
 set_post_args = reqparse.RequestParser()
 set_post_args.add_argument("exercise_id", type=int, help="exercise_id is required", required=True)
 set_post_args.add_argument("workout_id", type=int, help="workout_id is required", required=True)
-set_post_args.add_argument("reps", type=int, help="Number of reps is required", required=True)
-set_post_args.add_argument("weight", type=float, help="Weight is required", required=True)
-set_post_args.add_argument("units", type=str, help="Units for weight is required", required=True)
+set_post_args.add_argument("reps", type=int, help="Reps must be an integer", required=True)
+set_post_args.add_argument("weight", type=float, help="Weight must be an integer", required=True)
+set_post_args.add_argument("units", type=str, help="Units must be one of ['lbs', 'kg']", required=True)
 set_post_args.add_argument("notes", type=str, required=False)
 
 set_get_args = reqparse.RequestParser()
@@ -31,11 +31,11 @@ class CreateSet(Resource):
         # Check that exercise and workout are both good
         with current_app.test_client() as client:
             e_response = client.get(f"exercise/{exercise_id}")
-            if e_response.status_code != 200:
+            if e_response.status_code != 201:
                 abort(e_response.status_code, description=e_response.json["description"])
             
             w_response = client.get(f"workouts/{workout_id}")
-            if w_response.status_code != 200:
+            if w_response.status_code != 201:
                 abort(w_response.status_code, description=w_response.json["description"])
 
             exercise = e_response.json

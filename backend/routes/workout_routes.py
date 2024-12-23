@@ -58,4 +58,4 @@ class GetWorkout(Resource):
         if not result:
             abort(404, description="Workout does not exist")
 
-        return result
+        return result, 201

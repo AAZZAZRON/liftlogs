@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, Pressable, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
-import { ThemedText } from './ThemedText';
 import Colours from '@/constants/Colors';
 import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
@@ -8,13 +7,16 @@ import { RadioButton } from 'react-native-paper';
 
 
 export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [formData, setFormData] = useState({
+    const defaultValue = {
+        exercise_id: id,
+        workout_id: 1, // TODO: wrap everything to start/end workout
         reps: '10',
         weight: '45',
         units: 'lbs',
         notes: '',
-    });
+    };
+    const [isOpen, setIsOpen] = useState(false);
+    const [formData, setFormData] = useState(defaultValue);
 
     const updateForm = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
@@ -31,7 +33,7 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
         }
 
         const putData = async () => {
-            const response = await axios.post(`http://10.0.0.211:5000/exercise/${id}/entries/create`, {set: formData});
+            const response = await axios.post(`http://10.0.0.211:5000/addset`, formData);
             if (response) {
                 Alert.alert('Set Created Succesfully', "Your set has been successfully created");
                 reload();
@@ -39,9 +41,10 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
         }
 
         putData().catch((error) => {
-            // console.error(error.response.status, error.response.data);
-            Alert.alert(`Error Code ${error.response.status}`, error.response.data.description);
-        });
+            console.log(error.response.status, error.response.data);
+            let message = error.response.data.description || Object.values(error.response.data.message)[0];
+            Alert.alert(`Error Code ${error.response.status}`, message);
+        }).then(() => setFormData(defaultValue));
     };
 
     return (
@@ -67,9 +70,9 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
                                 <Text style={styles.label}>Weight: </Text>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="45lb"
+                                    placeholder="45"
                                     value={formData.weight}
-                                    keyboardType="numeric"
+                                    // keyboardType="numeric"
                                     onChangeText={(value: string) => updateForm('weight', value)}
                                 />
                             </View>
