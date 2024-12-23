@@ -6,6 +6,7 @@ class ExerciseModel(db.Model):
     __tablename__ = 'exercise'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    logs = db.relationship("EntryModel", backref="exercise")
 
 
 class WorkoutModel(db.Model):
@@ -17,6 +18,7 @@ class WorkoutModel(db.Model):
     end_time = db.Column(db.DateTime, nullable=True)
     duration = db.Column(db.Integer, nullable=True)
     notes = db.Column(db.String, nullable=True, default="")
+    exercises = db.relationship("EntryModel", backref="workout")
 
     def calculate_duration(self):
         if self.start_time and self.end_time:
@@ -30,6 +32,7 @@ class EntryModel(db.Model):
     exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey("workout.id"), nullable=False)
     notes = db.Column(db.String, nullable=True, default="") # useless
+    sets = db.relationship("SetModel", backref="entry")
 
 
 class SetModel(db.Model):

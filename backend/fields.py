@@ -24,11 +24,13 @@ entry_fields = {
     "exercise_id": fields.Integer,
     "workout_id": fields.Integer,
     "notes": fields.String,
+    "sets": fields.List(fields.Nested(set_fields))
 }
 
 exercise_fields = {
     "id": fields.Integer,
     "name": fields.String,
+    "logs": fields.List(fields.Nested(entry_fields))
 }
 
 workout_fields = {
@@ -39,5 +41,6 @@ workout_fields = {
     "end_time": fields.DateTime,
     "duration": fields.Integer,
     "notes": fields.String,
+    "exercises": fields.List(fields.Nested(entry_fields))
 }
 

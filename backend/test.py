@@ -57,4 +57,7 @@ def GetSets(id):
 # GetEntries({"exercise_id": 1, "workout_id": 1})
 # AddSet(1, 1, 10, 45, "lbs")
 # GetSets(1)
-
+# EndWorkout(1)
+# GetExercise()
+# GetEntries({"exercise_id": 1, "workout_id": 1})
+# GetWorkouts(1)
