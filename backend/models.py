@@ -29,15 +29,15 @@ class EntryModel(db.Model):
     date = db.Column(db.Date, nullable=False, default=date.today)
     exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey("workout.id"), nullable=False)
-    notes = db.Column(db.String, nullable=True, default="")
+    notes = db.Column(db.String, nullable=True, default="") # useless
 
 
 class SetModel(db.Model):
     __tablename__ = 'set'
     id = db.Column(db.Integer, primary_key=True)
     entry_id = db.Column(db.Integer, db.ForeignKey("entry.id"), nullable=False)
-    reps = db.Column(db.Integer, primary_key=True)
-    weight = db.Column(db.Float, primary_key=True)
+    reps = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
     units = db.Column(db.String, default="lbs")
     notes = db.Column(db.String, nullable=True, default="")
 

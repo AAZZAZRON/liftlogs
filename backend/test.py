@@ -8,11 +8,12 @@ headers = {
 
 def post(url, json={}):
     response = requests.post(BASE + url, json=json, headers=headers)
+    print(response.status_code)
     print(response.json())
     return response.json()
 
-def get(url):
-    response = requests.get(BASE + url, headers=headers)
+def get(url, json={}):
+    response = requests.get(BASE + url, json=json, headers=headers)
     print(response.json())
     return response.json()
 
@@ -31,6 +32,20 @@ def EndWorkout(id, notes=""):
 def GetWorkouts(id='all'):
     get(f"workouts/{id}")
 
+def GetEntries(json):
+    get("/entries", json)
+
+def AddSet(exercise_id, workout_id, reps, weight, units, notes=""):
+    post("/addset", json={"exercise_id": exercise_id, 
+                          "workout_id": workout_id,
+                          "reps": reps, 
+                          "weight": weight,
+                          "units": units,
+                          "notes": notes})
+
+def GetSets(id):
+    get("/sets", {"entry_id": id})
+
 
 # CreateExercise("Push Ups")
 # CreateExercise("Pull Ups")
@@ -39,3 +54,7 @@ def GetWorkouts(id='all'):
 # EndWorkout(2)
 # GetWorkouts()
 # GetWorkouts(2)
+# GetEntries({"exercise_id": 1, "workout_id": 1})
+# AddSet(1, 1, 10, 45, "lbs")
+# GetSets(1)
+

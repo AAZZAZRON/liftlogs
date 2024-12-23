@@ -40,3 +40,4 @@ workout_fields = {
     "duration": fields.Integer,
     "notes": fields.String,
 }
+
