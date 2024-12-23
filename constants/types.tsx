@@ -9,7 +9,7 @@ export type EntryObject = {
     id: number,
     date: Date,
     exercise_id: number,
-    text: string,
+    notes: string,
     sets: SetObject[],
 }
 

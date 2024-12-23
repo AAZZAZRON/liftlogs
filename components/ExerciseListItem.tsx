@@ -20,6 +20,7 @@ export default function ExerciseListItem({ exercise }: { exercise: ExerciseObjec
         if (exercise.logs) setFirstEntries(exercise.logs.reverse().slice(0, 3));
     }, []);
 
+
     
     return (
         <TouchableOpacity onPress={() => router.push({pathname: `/ExerciseScreen`, params: {name: exercise.name, id: exercise.id}})}>
