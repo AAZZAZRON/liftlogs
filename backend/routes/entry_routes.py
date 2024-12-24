@@ -24,7 +24,7 @@ class GetEntries(Resource):
                     raise ValueError
                 filters.append(EntryModel.exercise_id == exercise_id)
             except ValueError:
-                return {"message": "Invalid exercise_id"}, 400
+                abort(400, description="Invalid exercise_id")
         if workout_id:
             try:
                 workout_id = int(workout_id)

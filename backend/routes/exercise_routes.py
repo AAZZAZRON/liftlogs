@@ -33,7 +33,7 @@ class GetExercise(Resource):
                     raise ValueError
                 result = ExerciseModel.query.filter_by(id=exercise_id).first()
             except ValueError:
-                return {"message": "Invalid id number"}, 400
+                abort(400, description="Invalid id number")
         
         if not result and exercise_id != "all":
             abort(404, description="Exercise does not exist")

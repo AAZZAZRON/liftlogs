@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { View, ScrollView, ImageBackgroundComponent } from "react-native";
 import axios from "axios";
@@ -9,6 +9,7 @@ import AddSetForm from "@/components/AddSetForm";
 import Loading from "@/components/Loading";
 import { EntryObject } from "@/constants/types";
 import EntryItem from "@/components/EntryItem";
+import { WorkoutContext } from "@/contexts/Providers";
 
 
 export default function ExerciseScreen() {
@@ -16,6 +17,12 @@ export default function ExerciseScreen() {
     const [data, setData] = useState<{ logs: EntryObject[] } | null>(null);
     const [logs, setLogs] = useState<EntryObject[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    
+    const workoutContext = useContext(WorkoutContext);
+    const workoutId = workoutContext?.workoutId;
+    const setWorkoutId = workoutContext?.setWorkoutId;
+
+    console.log(workoutId);
 
     const reload = () => setIsLoading(true);
 

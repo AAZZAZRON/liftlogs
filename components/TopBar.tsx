@@ -1,15 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Modal, Pressable, View, Button, TouchableOpacity, Text } from 'react-native';
-import { ThemedText } from './ThemedText';
 import Colours from '@/constants/Colors';
 import MySearchBar from './SearchBar';
 import { ExerciseObject } from '@/constants/types';
 import AddExerciseForm from './AddExerciseForm';
-
+import { WorkoutContext } from '@/contexts/Providers';
+import axios from 'axios';
+import EndWorkoutForm from './EndWorkoutForm';
 
 
 export default function TopBar({data, setDatalist, reload}: {data: ExerciseObject[], setDatalist: (data: any) => void, reload: () => void}) {
     const [addFormVisible, setAddFormVisible] = useState(false);
+    const [endWorkoutVisible, setEndWorkoutVisible] = useState(false);
+
+
+    const workoutContext = useContext(WorkoutContext);
+    const workoutId = workoutContext?.workoutId;
 
     return (
         <View style={styles.container}>
@@ -21,10 +27,13 @@ export default function TopBar({data, setDatalist, reload}: {data: ExerciseObjec
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.endWorkoutButton}>
-                <Text style={styles.buttonText}>End Current Workout</Text>
-            </TouchableOpacity>
+            {workoutId === -1 ? <></> : 
+                <TouchableOpacity style={styles.endWorkoutButton} onPress={() => setEndWorkoutVisible(true)}>
+                    <Text style={styles.buttonText}>End Current Workout</Text>
+                </TouchableOpacity>
+            }
             <AddExerciseForm visible={addFormVisible} setVisible={setAddFormVisible} reload={reload} />
+            <EndWorkoutForm visible={endWorkoutVisible} setVisible={setEndWorkoutVisible} reload={reload} />
         </View>
     );
 }

@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
 import { Text, View } from "react-native";
 import Colours from "@/constants/Colors";
 import ExerciseList from "@/components/ExerciseList";
 import TopBar from "@/components/TopBar";
-import { useLocalSearchParams } from "expo-router/build/hooks";
 import Loading from "@/components/Loading";
 import { useFocusEffect } from "expo-router";
 

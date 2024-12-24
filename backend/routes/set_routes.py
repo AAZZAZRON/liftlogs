@@ -36,6 +36,7 @@ class CreateSet(Resource):
             
             w_response = client.get(f"workouts/{workout_id}")
             if w_response.status_code != 201:
+                print(w_response.status_code, w_response.json)
                 abort(w_response.status_code, description=w_response.json["description"])
 
             exercise = e_response.json

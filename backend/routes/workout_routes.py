@@ -53,7 +53,7 @@ class GetWorkout(Resource):
                     raise ValueError
                 result = WorkoutModel.query.filter_by(id=workout_id).first()
             except ValueError:
-                return {"message": "Invalid id number"}, 400
+                abort(400, description="Invalid workout_id")
         
         if not result:
             abort(404, description="Workout does not exist")
