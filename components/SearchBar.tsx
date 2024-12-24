@@ -33,6 +33,8 @@ const styles: any = {
         width: '100%',
         padding: 5,
         backgroundColor: Colours.y4,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
     },
     searchInput: {
         backgroundColor: Colours.y3,

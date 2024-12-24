@@ -4,6 +4,7 @@ import { useGlobalSearchParams } from "expo-router/build/hooks";
 
 export default function RootLayout() {
   const params = useGlobalSearchParams();
+  
   return (
     <Stack
       screenOptions={{
