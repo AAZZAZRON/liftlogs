@@ -1,11 +1,9 @@
-
 const Colours = {
   y1: '#FFF9EE',
   y2: '#FCEED5',
   y3: '#FFECC8',
   y4: '#F7DBA7',
   y5: '#FFD78E',
-
 
   b4: '#002A48',
 
@@ -18,7 +16,6 @@ const Colours = {
   green: '#98d68a',
   red: '#d58e89'
 }
-
 
 
 export default Colours;

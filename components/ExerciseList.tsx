@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import ExerciseListItem from './ExerciseListItem';
-import axios from 'axios';
 import { ExerciseObject } from '@/constants/types';
 
 
@@ -16,7 +15,6 @@ export default function ExerciseList({data}: {data: ExerciseObject[]}) {
             { data === undefined || data.length === 0 ? <ThemedText>No exercises...</ThemedText>
             :
                 data.map((ex: ExerciseObject, id) => {
-                    // console.log(ex.name);
                     return <ExerciseListItem key={id} exercise={ex}/>
                 })
             }

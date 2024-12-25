@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
-import { View, Button, Text, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
+import { View, Button, Text, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
 import { ReloadContext } from '@/contexts/ReloadProvider';
 

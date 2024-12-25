@@ -1,11 +1,10 @@
 import React, {useState, useContext} from 'react';
-import { Modal, Pressable, View, Button, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import Colours from '@/constants/Colors';
 import MySearchBar from './SearchBar';
 import { ExerciseObject } from '@/constants/types';
 import AddExerciseForm from './AddExerciseForm';
 import { WorkoutContext } from '@/contexts/WorkoutProvider';
-import axios from 'axios';
 import EndWorkoutForm from './EndWorkoutForm';
 import StartWorkoutButton from './StartWorkoutButton';
 

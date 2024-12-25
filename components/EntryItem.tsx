@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { EntryObject, SetObject } from '@/constants/types';
 import { ThemedText } from './ThemedText';
 import moment from 'moment';

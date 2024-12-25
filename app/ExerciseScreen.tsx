@@ -1,7 +1,7 @@
 import React from "react";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
-import { View, ScrollView, ImageBackgroundComponent } from "react-native";
+import { View, ScrollView } from "react-native";
 import axios from "axios";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
 import Colours from "@/constants/Colors";

@@ -18,3 +18,4 @@ export type ExerciseObject = {
     name: string,
     logs: EntryObject[],
 }
+

@@ -1,8 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { SearchBar } from '@rneui/base';
-import { View } from 'react-native';
 import Colours from '@/constants/Colors';
 import { ExerciseObject } from '@/constants/types';
 

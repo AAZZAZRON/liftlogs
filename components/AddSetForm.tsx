@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Button, Pressable, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import Colours from '@/constants/Colors';
 import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
