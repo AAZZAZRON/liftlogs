@@ -4,15 +4,15 @@ import Colours from '@/constants/Colors';
 import MySearchBar from './SearchBar';
 import { ExerciseObject } from '@/constants/types';
 import AddExerciseForm from './AddExerciseForm';
-import { WorkoutContext } from '@/contexts/Providers';
+import { WorkoutContext } from '@/contexts/WorkoutProvider';
 import axios from 'axios';
 import EndWorkoutForm from './EndWorkoutForm';
+import StartWorkoutButton from './StartWorkoutButton';
 
 
-export default function TopBar({data, setDatalist, reload}: {data: ExerciseObject[], setDatalist: (data: any) => void, reload: () => void}) {
+export default function TopBar({data, setDatalist}: {data: ExerciseObject[], setDatalist: (data: any) => void}) {
     const [addFormVisible, setAddFormVisible] = useState(false);
     const [endWorkoutVisible, setEndWorkoutVisible] = useState(false);
-
 
     const workoutContext = useContext(WorkoutContext);
     const workoutId = workoutContext?.workoutId;
@@ -27,13 +27,15 @@ export default function TopBar({data, setDatalist, reload}: {data: ExerciseObjec
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
             </View>
-            {workoutId === -1 ? <></> : 
+            {workoutId === -1 ? 
+                <StartWorkoutButton /> 
+            : 
                 <TouchableOpacity style={styles.endWorkoutButton} onPress={() => setEndWorkoutVisible(true)}>
                     <Text style={styles.buttonText}>End Current Workout</Text>
                 </TouchableOpacity>
             }
-            <AddExerciseForm visible={addFormVisible} setVisible={setAddFormVisible} reload={reload} />
-            <EndWorkoutForm visible={endWorkoutVisible} setVisible={setEndWorkoutVisible} reload={reload} />
+            <AddExerciseForm visible={addFormVisible} setVisible={setAddFormVisible} />
+            <EndWorkoutForm visible={endWorkoutVisible} setVisible={setEndWorkoutVisible} />
         </View>
     );
 }

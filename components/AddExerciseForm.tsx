@@ -1,14 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { View, Button, Text, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
+import { ReloadContext } from '@/contexts/ReloadProvider';
 
 
-export default function AddExerciseForm({visible, setVisible, reload}: {visible: boolean, setVisible: (b: boolean) => void, reload: () => void}) {
+export default function AddExerciseForm({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void}) {
     const [formData, setFormData] = useState({
         name: '',
     });
+    const reloadContext = useContext(ReloadContext);
+    const reload = reloadContext?.reload;
+    const setReload = reloadContext?.setReload || ((id) => {return id});
 
     const updateForm = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
@@ -26,7 +30,7 @@ export default function AddExerciseForm({visible, setVisible, reload}: {visible:
             const response = await axios.post(`http://10.0.0.211:5000/exercise/create`, formData);
             if (response) {
                 Alert.alert('Exercise Created', `${name} has been successfully created`);
-                reload();
+                setReload(true);
             };
         }
 

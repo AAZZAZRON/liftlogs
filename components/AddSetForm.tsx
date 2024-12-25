@@ -4,29 +4,29 @@ import Colours from '@/constants/Colors';
 import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
-import { WorkoutContext } from '@/contexts/Providers';
+import { WorkoutContext } from '@/contexts/WorkoutProvider';
+import { ReloadContext } from '@/contexts/ReloadProvider';
 
 
 export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
     const workoutContext = useContext(WorkoutContext);
     const workoutId = workoutContext?.workoutId || -1;
-    const setWorkoutId = workoutContext?.setWorkoutId || ((id) => {return id});
+    const reloadContext = useContext(ReloadContext);
+    const homeReload = reloadContext?.reload;
+    const setHomeReload = reloadContext?.setReload || ((id) => {return id});
 
-    const [defaultValue, setDefaultValue] = useState({
+    var defaultValue = {
         exercise_id: id,
         workout_id: workoutId,
         reps: '10',
         weight: '45',
         units: 'lbs',
         notes: '',
-    });
+    };
 
     const [isOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState(defaultValue);
 
-    const updateDefaultValue = (field: string, value: string) => {
-        setDefaultValue({ ...defaultValue, [field]: value });
-    };
     const updateForm = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
     };
@@ -35,7 +35,6 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
     const submitForm = () => {
         var reps = formData.reps;
         var weight = formData.weight;
-        var workout_id = formData.workout_id;
 
         setIsOpen(false);
         if (reps === "" || weight === "") {
@@ -43,39 +42,21 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
             return;
         }
 
-        const createWorkout = async () => {
-            const response = await axios.post(`http://10.0.0.211:5000/workouts/start`);
-            if (response) {
-                updateDefaultValue("workout_id", response.data.id);
-                setWorkoutId(response.data.id);
-                return response.data.id;
-            };
-            return -1;
-        }
-
-        const postData = async (id: string) => {
-            const response = await axios.post(`http://10.0.0.211:5000/addset`, { ...formData, ["workout_id"]: id });
+        const postData = async () => {
+            const response = await axios.post(`http://10.0.0.211:5000/addset`, formData);
             if (response) {
                 Alert.alert('Set Created Succesfully', "Your set has been successfully created");
             };
         }
 
-        const callAPI = async () => {
-            var id = workout_id.toString();
-            if (workout_id === -1) {
-                id = await createWorkout().catch((error) => {
-                    let message = error.response.data.description || Object.values(error.response.data.message)[0];
-                    Alert.alert(`Error Code ${error.response.status}`, message);
-                });
-            }
-            
-            await postData(id).catch((error) => {
-                let message = error.response.data.description || Object.values(error.response.data.message)[0];
-                Alert.alert(`Error Code ${error.response.status}`, message);
-            }).then(() => setFormData(defaultValue));
-        }
 
-        callAPI();
+        postData().catch((error) => {
+            let message = error.response.data.description || Object.values(error.response.data.message)[0];
+            Alert.alert(`Error Code ${error.response.status}`, message);
+        }).then(() => setFormData(defaultValue));
+
+        reload();
+        setHomeReload(true);
     };
 
     return (

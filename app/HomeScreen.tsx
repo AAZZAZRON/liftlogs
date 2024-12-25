@@ -6,17 +6,18 @@ import ExerciseList from "@/components/ExerciseList";
 import TopBar from "@/components/TopBar";
 import Loading from "@/components/Loading";
 import { useFocusEffect } from "expo-router";
+import { ReloadContext } from "@/contexts/ReloadProvider";
 
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [datalist, setDatalist] = useState([]); // what the Exercise list gets
-
-  const reload = () => setIsLoading(true);
+  const reloadContext = useContext(ReloadContext);
+  const reload = reloadContext?.reload;
+  const setReload = reloadContext?.setReload || ((id) => {return id});
 
   useEffect(() => {
-      console.log("loading", isLoading);
       const fetchData = async () => {
         const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
         if (response) {
@@ -28,14 +29,15 @@ export default function HomeScreen() {
       if (isLoading) fetchData().catch(console.error);
   }, [isLoading]);
 
-  
-  useFocusEffect( // reload on refocus
-    useCallback(() => {
-      reload();
-      return () => {
-      };
-    }, [])
-  );
+
+  useEffect(() => {
+    console.log("reload", reload);
+    if (reload) {
+      setIsLoading(true);
+      setReload(false);
+    }
+  }, [reload]);
+
 
   return (
     isLoading ? 
@@ -44,7 +46,7 @@ export default function HomeScreen() {
       <View
         style={styles.container}
       >
-        <TopBar data={data} setDatalist={setDatalist} reload={reload}/>
+        <TopBar data={data} setDatalist={setDatalist}/>
         <ExerciseList data={datalist} />
       </View>
   );

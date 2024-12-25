@@ -3,10 +3,10 @@ import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { View, Button, Text, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
-import { WorkoutContext } from '@/contexts/Providers';
+import { WorkoutContext } from '@/contexts/WorkoutProvider';
 
 
-export default function EndWorkoutForm({visible, setVisible, reload}: {visible: boolean, setVisible: (b: boolean) => void, reload: () => void}) {
+export default function EndWorkoutForm({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void}) {
     const [formData, setFormData] = useState({
         id: '',
         notes: '',
@@ -27,7 +27,6 @@ export default function EndWorkoutForm({visible, setVisible, reload}: {visible: 
             const response = await axios.post(`http://10.0.0.211:5000/workouts/end`, formData);
             if (response) {
                 Alert.alert('Workout Ended', '');
-                reload();
             };
         }
 

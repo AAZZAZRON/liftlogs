@@ -14,6 +14,8 @@ const Colours = {
 
   lightText: '#FFFFFF',
   darkText: '#002A48',
+
+  green: '#98d68a',
   red: '#d58e89'
 }
 
