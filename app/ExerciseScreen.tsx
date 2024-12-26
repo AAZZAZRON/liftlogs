@@ -7,7 +7,7 @@ import { useGlobalSearchParams } from "expo-router/build/hooks";
 import Colours from "@/constants/Colors";
 import AddSetForm from "@/components/AddSetForm";
 import Loading from "@/components/Loading";
-import { EntryObject } from "@/constants/types";
+import { EntryObject, StatObject } from "@/constants/types";
 import EntryItem from "@/components/EntryItem";
 import StatsSection from "@/components/StatsSection";
 
@@ -15,22 +15,32 @@ import StatsSection from "@/components/StatsSection";
 export default function ExerciseScreen() {
     const params = useGlobalSearchParams();
     const [data, setData] = useState<{ logs: EntryObject[] } | null>(null);
+    const [stats, setStats] = useState<StatObject | null>(null);
     const [logs, setLogs] = useState<EntryObject[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const reload = () => setIsLoading(true);
 
     useEffect(() => {
+        const fetchStats = async () => {
+            const response = await axios.get(`http://10.0.0.211:5000/stats/${params.id}`);
+            if (response) {
+                setStats(response.data);
+            }
+        }
+
         const fetchData = async () => {
             const response = await axios.get(`http://10.0.0.211:5000/exercise/${params.id}`);
             if (response) {
                 setData(response.data);
+                setLogs(response.data.logs.reverse());
             }
-            setIsLoading(false);
         }
-        if (isLoading) fetchData().catch(console.error);
-        else {
-            if (data?.logs) setLogs(data.logs.reverse());
+
+        if (isLoading) {
+            fetchStats().catch(console.error);
+            fetchData().catch(console.error);
+            setIsLoading(false);
         }
     }, [isLoading]);
 
@@ -42,8 +52,14 @@ export default function ExerciseScreen() {
             <View style={styles.container}>
                 <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} reload={reload}/>
                 <ScrollView style={styles.cardContainer}>
-                    <ThemedText type={'subtitle'}>Stats:</ThemedText>
-                    <StatsSection />
+                    {
+                        stats && stats?.shownStats.length !== 0 ? 
+                        <>
+                            <ThemedText type={'subtitle'}>Stats:</ThemedText>
+                            <StatsSection stats={stats}/>
+                        </>
+                        : <></>
+                    }
                     <ThemedText type={'subtitle'}>Recent Logs</ThemedText>
                     <View style={styles.entryItems}>
                         {   
@@ -60,8 +76,6 @@ export default function ExerciseScreen() {
             </View>
     )
 }
-
-
 
 
 const styles: any = {
@@ -83,8 +97,4 @@ const styles: any = {
         // paddingTop: 20,
         paddingBottom: 20,
     }
-
   }
-  
-  
-  

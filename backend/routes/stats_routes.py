@@ -1,7 +1,5 @@
-from flask import current_app, jsonify
-from flask_restful import Resource, reqparse, abort, marshal_with
-from extensions import db
-from models import ExerciseModel, EntryModel, SetModel
+from flask_restful import Resource, abort, marshal_with
+from models import ExerciseModel, EntryModel
 from fields import stats_fields
 from bisect import bisect_left
 from datetime import date
@@ -14,12 +12,12 @@ def getOneRepMax(exercise):
     if not sets:
         return {}
     weight, units, date = sorted(sets, key=lambda s: (-int(s[0]) * (2.2 if s[1] == "kg" else 1), s[2]))[0]
-    print(weight, units, date)
     return {
         "weight": weight,
         "units": units,
         "date": date
     }
+
 
 def getVolumePerWorkout(exercise):
     calculateVolume = lambda lst: sum(x[1] for x in lst) // len(lst) if lst else -1
@@ -55,10 +53,10 @@ def propagateStats(exercise):
     
     # Volume Per Workout
     stats["volumePerWorkout"] = getVolumePerWorkout(exercise)
-    if -1 not in stats["volumePerWorkout"].values():
-        shownStats.append("volumePerWorkout")
-    else:
-        stats["volumePerWorkout"] = {} # reset garbage
+    if -1 not in [stats["volumePerWorkout"]["thisWeek"], stats["volumePerWorkout"]["lastWeek"]]:
+        shownStats.append("vpwWeek")
+    if -1 not in [stats["volumePerWorkout"]["thisMonth"], stats["volumePerWorkout"]["lastMonth"]]:
+        shownStats.append("vpwMonth")
 
     return {
         "id": exercise.id, 

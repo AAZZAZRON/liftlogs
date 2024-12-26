@@ -73,4 +73,4 @@ def GetStats(id='all'):
 # GetExercise()
 # GetEntries({"exercise_id": 1, "workout_id": 1})
 # GetWorkouts(1)
-GetStats(5)
+# GetStats(5)
