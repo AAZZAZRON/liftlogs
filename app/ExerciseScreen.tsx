@@ -43,7 +43,11 @@ export default function ExerciseScreen() {
                 <ScrollView style={styles.cardContainer}>
                     <ThemedText type={'subtitle'}>Recent Logs</ThemedText>
                     <View style={styles.entryItems}>
-                        { 
+                        {   
+                            logs === undefined || logs.length === 0 
+                        ? 
+                            <ThemedText>You have no logs yet!</ThemedText> 
+                        :
                             logs.map((en: EntryObject, id) => {
                                 return <EntryItem key={id} entry={en}/>
                             })

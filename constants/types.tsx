@@ -19,3 +19,20 @@ export type ExerciseObject = {
     logs: EntryObject[],
 }
 
+export type StatObject = {
+    "id": number,
+    "shownStats": string[],
+    "stats": {
+        "oneRepMax": {
+            "weight": number,
+            "units": string,
+            "date": Date,
+        },
+        "volumePerWorkout": {
+            "thisWeek": number,
+            "lastWeek": number,
+            "thisMonth": number,
+            "lastMonth": number,
+        },
+    }
+}

@@ -7,6 +7,7 @@ from routes.exercise_routes import *
 from routes.workout_routes import * 
 from routes.entry_routes import *
 from routes.set_routes import *
+from routes.stats_routes import *
 
 
 # initialize flask app
@@ -34,6 +35,9 @@ api.add_resource(GetEntries, "/entries")
 
 api.add_resource(CreateSet, "/addset")
 api.add_resource(GetSets, "/sets")
+
+api.add_resource(GetStatsAll, "/stats/all")
+api.add_resource(GetStatsOne, "/stats/<exercise_id>")
 
 # Run App
 if __name__ == "__main__":

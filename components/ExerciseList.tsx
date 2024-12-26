@@ -3,10 +3,10 @@ import { ScrollView } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import ExerciseListItem from './ExerciseListItem';
-import { ExerciseObject } from '@/constants/types';
+import { ExerciseObject, StatObject } from '@/constants/types';
 
 
-export default function ExerciseList({data}: {data: ExerciseObject[]}) {
+export default function ExerciseList({data, stats}: {data: ExerciseObject[], stats: StatObject[]}) {
     return (
         <ScrollView
             style={styles.container}
@@ -15,7 +15,7 @@ export default function ExerciseList({data}: {data: ExerciseObject[]}) {
             { data === undefined || data.length === 0 ? <ThemedText>No exercises...</ThemedText>
             :
                 data.map((ex: ExerciseObject, id) => {
-                    return <ExerciseListItem key={id} exercise={ex}/>
+                    return <ExerciseListItem key={id} exercise={ex} stat={stats[id] || null}/>
                 })
             }
         </ScrollView>

@@ -30,7 +30,7 @@ entry_fields = {
 exercise_fields = {
     "id": fields.Integer,
     "name": fields.String,
-    "logs": fields.List(fields.Nested(entry_fields))
+    "logs": fields.List(fields.Nested(entry_fields)),
 }
 
 workout_fields = {
@@ -44,3 +44,20 @@ workout_fields = {
     "exercises": fields.List(fields.Nested(entry_fields))
 }
 
+stats_fields = {
+    "id": fields.Integer,
+    "shownStats": fields.List(fields.String),
+    "stats": fields.Nested({
+        "oneRepMax": fields.Nested({
+            "weight": fields.Float,
+            "units": fields.String,
+            "date": DateField,
+        }),
+        "volumePerWorkout": fields.Nested({
+            "thisWeek": fields.Float,
+            "lastWeek": fields.Float,
+            "thisMonth": fields.Float,
+            "lastMonth": fields.Float,
+        }),
+    })
+}

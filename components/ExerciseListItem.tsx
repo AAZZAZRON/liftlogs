@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
-import { EntryObject, ExerciseObject, SetObject } from '@/constants/types';
+import { EntryObject, ExerciseObject, SetObject, StatObject } from '@/constants/types';
 import { useRouter } from 'expo-router';
 
 function parseEntry(entry: EntryObject): string {
@@ -11,17 +11,14 @@ function parseEntry(entry: EntryObject): string {
     return s + ' - ' + arr.join(", ");
 }
 
-export default function ExerciseListItem({ exercise }: { exercise: ExerciseObject }) {
+export default function ExerciseListItem({ exercise, stat }: { exercise: ExerciseObject, stat: StatObject }) {
     const router = useRouter();
-
     const [firstEntries, setFirstEntries] = useState<EntryObject[]>();
 
     useEffect(() => {
         if (exercise.logs) setFirstEntries(exercise.logs.reverse().slice(0, 3));
     }, []);
 
-
-    
     return (
         <TouchableOpacity onPress={() => router.push({pathname: `/ExerciseScreen`, params: {name: exercise.name, id: exercise.id}})}>
             <View
@@ -38,12 +35,25 @@ export default function ExerciseListItem({ exercise }: { exercise: ExerciseObjec
                 }
             </View>
             <View style={styles.right}>
-                <ThemedText type="big">+13</ThemedText>
-                <ThemedText type="default" style={{textAlign: 'center'}}>Reps Since 03/13</ThemedText>
+                <OneRepMax stat={stat} />
             </View>
             </View>
         </TouchableOpacity>
     );
+}
+
+function OneRepMax({stat}: {stat: StatObject}) {
+    if (stat == null || !stat.shownStats.includes("oneRepMax")) return <ThemedText>No 1RM...</ThemedText>
+    const weight = stat.stats.oneRepMax.weight;
+    const units = stat.stats.oneRepMax.units;
+    const date = stat.stats.oneRepMax.date;
+
+    return (
+        <>
+            <ThemedText type="title">{weight}{units}</ThemedText>
+            <ThemedText type="default" style={{textAlign: 'center', lineHeight: 18}}>Achieved on {date.toString()}</ThemedText>
+        </>
+    )
 }
 
 

@@ -10,6 +10,7 @@ import { ReloadContext } from "@/contexts/ReloadProvider";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
+  const [stats, setStats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [datalist, setDatalist] = useState([]); // what the Exercise list gets
   const reloadContext = useContext(ReloadContext);
@@ -23,34 +24,39 @@ export default function HomeScreen() {
           setData(response.data);
           setDatalist(response.data);
         }
+      }
+
+      const fetchStats = async () => {
+        const response = await axios.get(`http://10.0.0.211:5000/stats/all`);
+        if (response) {
+          setStats(response.data);
+        }
+      }
+
+      if (isLoading) {
+        fetchData().catch(console.error);
+        fetchStats().catch(console.error);
         setIsLoading(false);
       }
-      if (isLoading) fetchData().catch(console.error);
   }, [isLoading]);
 
-
   useEffect(() => {
-    console.log("reload", reload);
     if (reload) {
       setIsLoading(true);
       setReload(false);
     }
   }, [reload]);
 
-
   return (
     isLoading ? 
       <Loading />
     :
-      <View
-        style={styles.container}
-      >
+      <View style={styles.container}>
         <TopBar data={data} setDatalist={setDatalist}/>
-        <ExerciseList data={datalist} />
+        <ExerciseList data={datalist} stats={stats} />
       </View>
   );
 }
-
 
 
 const styles: any = {
@@ -60,5 +66,3 @@ const styles: any = {
     alignItems: "center",
   },
 }
-
-

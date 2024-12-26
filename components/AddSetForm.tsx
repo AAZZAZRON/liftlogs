@@ -37,6 +37,10 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
         var weight = formData.weight;
 
         setIsOpen(false);
+        if (workoutId === -1) {
+            Alert.alert('Workout Not Start', 'Please start a workout first.');
+            return;
+        }
         if (reps === "" || weight === "") {
             Alert.alert('Invalid Data', 'You forgot to fill out some fields.');
             return;
