@@ -3,6 +3,9 @@ from flask_restful import Resource, reqparse, abort, marshal_with
 from extensions import db
 from models import ExerciseModel, EntryModel, SetModel
 from fields import stats_fields
+from bisect import bisect_left
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 def getOneRepMax(exercise):
@@ -18,16 +21,44 @@ def getOneRepMax(exercise):
         "date": date
     }
 
+def getVolumePerWorkout(exercise):
+    calculateVolume = lambda lst: sum(x[1] for x in lst) // len(lst) if lst else -1
+    entries = EntryModel.query.filter_by(exercise_id=exercise.id).all()
+    volume = []
+    for entry in entries:
+        s = 0
+        for set in entry.sets:
+            s += int(set.weight) * (2.2 if set.units == "kg" else 1) * int(set.reps)
+        volume.append((entry.date, s))
+
+    oneWeekAgo = bisect_left(volume, (date.today() + relativedelta(days=-7), 0))
+    TwoWeeksAgo = bisect_left(volume, (date.today() + relativedelta(days=-14), 0))
+    oneMonthAgo = bisect_left(volume, (date.today() + relativedelta(months=-1), 0))
+    twoMonthsAgo = bisect_left(volume, (date.today() + relativedelta(months=-2), 0))
+
+    return {
+        "thisWeek": calculateVolume(volume[oneWeekAgo:]),
+        "lastWeek": calculateVolume(volume[TwoWeeksAgo:oneWeekAgo]),
+        "thisMonth": calculateVolume(volume[oneMonthAgo:]),
+        "lastMonth": calculateVolume(volume[twoMonthsAgo:oneMonthAgo]),
+    }
+
 
 def propagateStats(exercise):
     shownStats = []
     stats = {}
 
+    # One Rep Max
     stats["oneRepMax"] = getOneRepMax(exercise)
     if stats["oneRepMax"]:
         shownStats.append("oneRepMax")
-        print(exercise.id, stats)
-
+    
+    # Volume Per Workout
+    stats["volumePerWorkout"] = getVolumePerWorkout(exercise)
+    if -1 not in stats["volumePerWorkout"].values():
+        shownStats.append("volumePerWorkout")
+    else:
+        stats["volumePerWorkout"] = {} # reset garbage
 
     return {
         "id": exercise.id, 
@@ -57,6 +88,4 @@ class GetStatsOne(Resource):
         if not exercise and exercise_id != "all":
             abort(404, description="Exercise does not exist")
         
-        print(propagateStats(exercise))
-
         return propagateStats(exercise), 201

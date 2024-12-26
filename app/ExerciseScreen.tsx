@@ -9,6 +9,7 @@ import AddSetForm from "@/components/AddSetForm";
 import Loading from "@/components/Loading";
 import { EntryObject } from "@/constants/types";
 import EntryItem from "@/components/EntryItem";
+import StatsSection from "@/components/StatsSection";
 
 
 export default function ExerciseScreen() {
@@ -41,6 +42,8 @@ export default function ExerciseScreen() {
             <View style={styles.container}>
                 <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} reload={reload}/>
                 <ScrollView style={styles.cardContainer}>
+                    <ThemedText type={'subtitle'}>Stats:</ThemedText>
+                    <StatsSection />
                     <ThemedText type={'subtitle'}>Recent Logs</ThemedText>
                     <View style={styles.entryItems}>
                         {   
