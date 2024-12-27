@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { View, Button, Text, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
-import { WorkoutContext } from '@/contexts/WorkoutProvider';
+import { useWorkoutContext } from '@/contexts/WorkoutProvider';
 
 
 export default function EndWorkoutForm({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void}) {
@@ -11,30 +11,24 @@ export default function EndWorkoutForm({visible, setVisible}: {visible: boolean,
         id: '',
         notes: '',
     });
-    const workoutContext = useContext(WorkoutContext);
-    const workoutId = workoutContext?.workoutId || -1;
-    const setWorkoutId = workoutContext?.setWorkoutId || ((id) => {return id});
+    const workoutContext = useWorkoutContext();
+    const workoutId = workoutContext.workoutId;
+    const setWorkoutId = workoutContext.setWorkoutId;
 
     const updateForm = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
     };
 
-    const submitForm = () => {
-        var notes = formData.notes;
+    const submitForm = async () => {
         setVisible(false);
-
-        const postData = async () => {
+        try {
             const response = await axios.post(`http://10.0.0.211:5000/workouts/end`, formData);
-            if (response) {
-                Alert.alert('Workout Ended', '');
-            };
-        }
-
-        postData().catch((error) => {
+            if (response) Alert.alert('Workout Ended', '');
+        } catch (error: any) {
             Alert.alert(`Error Code ${error.response.status}`, error.response.data.description);
-        }).then(() => {
+        } finally {
             setWorkoutId(-1);
-        });
+        }
     };
 
     useEffect(() => {

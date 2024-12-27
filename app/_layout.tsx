@@ -2,14 +2,14 @@ import { Stack } from "expo-router";
 import Colours from "@/constants/Colors";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
 import { WorkoutContextProvider } from "@/contexts/WorkoutProvider";
-import { ReloadContextProvider } from "@/contexts/ReloadProvider";
+import { ApiContextProvider } from "@/contexts/ApiProvider";
 
 export default function RootLayout() {
   const params = useGlobalSearchParams();
   
   return (
-    <WorkoutContextProvider>
-      <ReloadContextProvider>
+    <ApiContextProvider>
+      <WorkoutContextProvider>
         <Stack
           screenOptions={{
             headerStyle: {
@@ -30,8 +30,8 @@ export default function RootLayout() {
             options={{title: Array.isArray(params.name) ? params.name[0] : params.name || "Exercise"}}
           />
         </Stack>
-      </ReloadContextProvider>
-    </WorkoutContextProvider>
+      </WorkoutContextProvider>
+    </ApiContextProvider>
   );
 }
 

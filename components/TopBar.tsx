@@ -1,26 +1,25 @@
-import React, {useState, useContext} from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Colours from '@/constants/Colors';
 import MySearchBar from './SearchBar';
-import { ExerciseObject } from '@/constants/types';
 import AddExerciseForm from './AddExerciseForm';
-import { WorkoutContext } from '@/contexts/WorkoutProvider';
+import { useWorkoutContext } from '@/contexts/WorkoutProvider';
 import EndWorkoutForm from './EndWorkoutForm';
 import StartWorkoutButton from './StartWorkoutButton';
 
 
-export default function TopBar({data, setDatalist}: {data: ExerciseObject[], setDatalist: (data: any) => void}) {
+export default function TopBar() {
     const [addFormVisible, setAddFormVisible] = useState(false);
     const [endWorkoutVisible, setEndWorkoutVisible] = useState(false);
 
-    const workoutContext = useContext(WorkoutContext);
-    const workoutId = workoutContext?.workoutId;
+    const workoutContext = useWorkoutContext();
+    const workoutId = workoutContext.workoutId;
 
     return (
         <View style={styles.container}>
             <View style={styles.horizontalContainer}>
                 <View style={{width: '80%'}}>
-                    <MySearchBar data={data} setDatalist={setDatalist} />
+                    <MySearchBar />
                 </View>
                 <TouchableOpacity style={styles.addButton} onPress={() => (setAddFormVisible(true))}>
                     <Text style={styles.buttonText}>Add</Text>

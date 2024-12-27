@@ -56,6 +56,7 @@ def GetStats(id='all'):
 # CreateExercise("Leg Press")
 # CreateExercise("Lat Pulldown")
 # CreateExercise("Tricep Extension")
+# GetExercise()
 # GetExercise(1)
 # StartWorkout()
 # EndWorkout(2)
