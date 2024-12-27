@@ -3,18 +3,30 @@ import { ScrollView } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import ExerciseListItem from './ExerciseListItem';
-import { ExerciseObject, StatObject } from '@/constants/types';
+import { ExerciseObject } from '@/constants/types';
+import { useHomeApiContext } from "@/contexts/HomeApiProvider";
 
 
-export default function ExerciseList({data, stats}: {data: ExerciseObject[], stats: StatObject[]}) {
+export default function ExerciseList() {
+    const apiContext = useHomeApiContext();
+    const data = apiContext.exerciseData;
+    const stats = apiContext.statsData;
+    const search = apiContext.search;
+
+    // filter data from searchbar
+    const filterData = (data: ExerciseObject[]) => {
+        // TODO: make search better
+        return data.filter((exercise: ExerciseObject) => search === '' || exercise.name.includes(search));
+    }
+
     return (
         <ScrollView
             style={styles.container}
             contentContainerStyle={styles.exerciseList}
         >
-            { data === undefined || data.length === 0 ? <ThemedText>No exercises...</ThemedText>
+            { filterData(data).length === 0 ? <ThemedText>No exercises...</ThemedText>
             :
-                data.map((ex: ExerciseObject, id) => {
+                filterData(data).map((ex: ExerciseObject, id) => {
                     return <ExerciseListItem key={id} exercise={ex} stat={stats[id] || null}/>
                 })
             }

@@ -5,8 +5,10 @@ import axios from "axios";
 interface ApiContextType {
     exerciseData: ExerciseObject[],
     statsData: StatObject[],
-    loading: Boolean,
-    reload: Function;
+    loading: boolean,
+    reload: Function,
+    search: string,
+    setSearch: Function,
 }
 
 const HomeApiContext = createContext<ApiContextType | null>(null);
@@ -14,12 +16,13 @@ const HomeApiContext = createContext<ApiContextType | null>(null);
 // Deal with all of the API calling in the background
 export const HomeApiContetProvider = ({ children }: any) => {
     const [exerciseData, setExerciseData] = useState([]);
+    const [search, setSearch] = useState(""); // Filtered
     const [statsData, setStatsData] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // API Calling
     const fetchExerciseData = async () => {
         const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
-        if (response) console.log(response.data[0].logs)
         setExerciseData(await response.data);
     }
 
@@ -31,21 +34,24 @@ export const HomeApiContetProvider = ({ children }: any) => {
     const fetchApiData = async () => {
         setLoading(true);
         try {
+            console.log("fetching...")
             await fetchExerciseData();
             await fetchStatsData();
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
+            setSearch("");
         }
     }
 
+    // on component mount
     useEffect(() => {
         fetchApiData();
     }, []);
 
     return (
-        <HomeApiContext.Provider value={{ exerciseData, statsData, loading, reload: fetchApiData }}>
+        <HomeApiContext.Provider value={{ exerciseData, statsData, loading, reload: fetchApiData, search, setSearch }}>
             { children }
         </HomeApiContext.Provider>
     )

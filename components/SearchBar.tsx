@@ -2,17 +2,18 @@ import React from 'react';
 import { useState } from 'react';
 import { SearchBar } from '@rneui/base';
 import Colours from '@/constants/Colors';
-import { ExerciseObject } from '@/constants/types';
+import { useHomeApiContext } from "@/contexts/HomeApiProvider";
+
 
 // https://reactnativeelements.com/docs/components/searchbar
 
-export default function MySearchBar({data, setDatalist}: {data: ExerciseObject[], setDatalist: (data: any) => void}) {
-    const [search, setSearch] = useState('');
+export default function MySearchBar() {
+    const apiContext = useHomeApiContext();
+    const search = apiContext.search;
+    const setSearch = apiContext.setSearch;
 
     const updateSearch = (search: string) => {
         setSearch(search);
-        var filteredData = data.filter((exercise) => search === '' || exercise.name.includes(search));
-        setDatalist(filteredData);
     }
 
     return (
