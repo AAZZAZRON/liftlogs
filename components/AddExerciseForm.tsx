@@ -25,7 +25,7 @@ export default function AddExerciseForm({visible, setVisible}: {visible: boolean
         }
 
         const putData = async () => {
-            const response = await axios.post(`http://10.0.0.211:5000/exercise/create`, formData);
+            const response = await axios.post(`exercise/create`, formData);
             if (response) {
                 Alert.alert('Exercise Created', `${name} has been successfully created`);
                 reload();

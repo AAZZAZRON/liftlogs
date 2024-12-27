@@ -9,7 +9,7 @@ export default function StartWorkoutButton() {
 
     const startWorkout = async () => {
         try {
-            const response = await axios.post(`http://10.0.0.211:5000/workouts/start`);
+            const response = await axios.post(`workouts/start`);
             setWorkoutId(await response.data.id);
         } catch (error: any) {
             let message = error.response.data.description || Object.values(error.response.data.message)[0];

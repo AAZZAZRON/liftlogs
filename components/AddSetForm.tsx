@@ -46,7 +46,7 @@ export default function AddSetForm({id}: {id: string}) {
         }
 
         try {
-            const response = await axios.post(`http://10.0.0.211:5000/addset`, formData);
+            const response = await axios.post(`addset`, formData);
             if (response) {
                 Alert.alert('Set Created Succesfully', "Your set has been successfully created");
             };

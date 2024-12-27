@@ -24,12 +24,12 @@ export const ApiContextProvider = ({ children }: any) => {
 
     // API Calling
     const fetchExerciseData = async () => {
-        const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
+        const response = await axios.get(`exercise/all`);
         setExerciseData(await response.data);
     }
 
     const fetchStatsData = async () => {
-        const response = await axios.get(`http://10.0.0.211:5000/stats/all`);
+        const response = await axios.get(`stats/all`);
         setStatsData(await response.data);
     }
 
