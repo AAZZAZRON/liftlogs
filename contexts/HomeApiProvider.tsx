@@ -19,6 +19,7 @@ export const HomeApiContetProvider = ({ children }: any) => {
 
     const fetchExerciseData = async () => {
         const response = await axios.get(`http://10.0.0.211:5000/exercise/all`);
+        if (response) console.log(response.data[0].logs)
         setExerciseData(await response.data);
     }
 

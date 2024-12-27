@@ -1,19 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import Colours from '@/constants/Colors';
 import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
-import { WorkoutContext } from '@/contexts/WorkoutProvider';
-import { ReloadContext } from '@/contexts/ReloadProvider';
+import { useWorkoutContext } from '@/contexts/WorkoutProvider';
+import { useHomeApiContext } from '@/contexts/HomeApiProvider';
 
 
 export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
-    const workoutContext = useContext(WorkoutContext);
-    const workoutId = workoutContext?.workoutId || -1;
-    const reloadContext = useContext(ReloadContext);
-    const homeReload = reloadContext?.reload;
-    const setHomeReload = reloadContext?.setReload || ((id) => {return id});
+    const workoutContext = useWorkoutContext();
+    const workoutId = workoutContext.workoutId;
+    const apiContext = useHomeApiContext();
+    const homeReload = apiContext.reload;
 
     var defaultValue = {
         exercise_id: id,
@@ -32,7 +31,7 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
     };
 
 
-    const submitForm = () => {
+    const submitForm = async () => {
         var reps = formData.reps;
         var weight = formData.weight;
 
@@ -46,21 +45,19 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
             return;
         }
 
-        const postData = async () => {
+        try {
             const response = await axios.post(`http://10.0.0.211:5000/addset`, formData);
             if (response) {
                 Alert.alert('Set Created Succesfully', "Your set has been successfully created");
             };
-        }
-
-
-        postData().catch((error) => {
+        } catch (error: any) {
             let message = error.response.data.description || Object.values(error.response.data.message)[0];
             Alert.alert(`Error Code ${error.response.status}`, message);
-        }).then(() => setFormData(defaultValue));
-
-        reload();
-        setHomeReload(true);
+        } finally {
+            reload();
+            homeReload();
+            setFormData(defaultValue);
+        }
     };
 
     return (
