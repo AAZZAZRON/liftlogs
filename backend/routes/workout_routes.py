@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, abort, marshal_with
 from datetime import datetime
-from extensions import db
+from extensions import db, require_authentication
 from models import WorkoutModel
 from fields import workout_fields
 
@@ -12,6 +12,7 @@ workout_end_args.add_argument("notes", type=str, default="", required=False)
 
 class StartWorkout(Resource):
     @marshal_with(workout_fields)
+    @require_authentication
     def post(self):
         workout = WorkoutModel()
         db.session.add(workout)
@@ -21,9 +22,9 @@ class StartWorkout(Resource):
 
 class EndWorkout(Resource):
     @marshal_with(workout_fields)
+    @require_authentication
     def post(self):
         workout_args = workout_end_args.parse_args()
-        print(workout_args)
         workout = WorkoutModel.query.filter_by(id=workout_args["id"]).first()
         if not workout:
             abort(404, description="You cannot end a workout that hasn't started.")
@@ -43,6 +44,7 @@ class EndWorkout(Resource):
 
 class GetWorkout(Resource):
     @marshal_with(workout_fields)
+    @require_authentication
     def get(self, workout_id):
         if workout_id == "all":
             result = WorkoutModel.query.all()

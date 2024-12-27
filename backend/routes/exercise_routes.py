@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse, abort, marshal_with
-from extensions import db
+from extensions import db, require_authentication
 from models import ExerciseModel
 from fields import exercise_fields
 
@@ -9,6 +9,7 @@ exercise_post_args.add_argument("name", type=str, help="Name of exercise is requ
 
 class CreateExercise(Resource):
     @marshal_with(exercise_fields)
+    @require_authentication
     def post(self):
         exercise_args = exercise_post_args.parse_args()
 
@@ -23,6 +24,7 @@ class CreateExercise(Resource):
 
 class GetExercise(Resource):
     @marshal_with(exercise_fields)
+    @require_authentication
     def get(self, exercise_id):
         if exercise_id == "all":
             result = ExerciseModel.query.all()

@@ -4,6 +4,7 @@ from fields import stats_fields
 from bisect import bisect_left
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from extensions import require_authentication
 
 
 def getOneRepMax(exercise):
@@ -67,6 +68,7 @@ def propagateStats(exercise):
 
 class GetStatsAll(Resource):
     @marshal_with(stats_fields)
+    @require_authentication
     def get(self):
         exercises = ExerciseModel.query.all()
         return [propagateStats(exercise) for exercise in exercises], 201
@@ -74,6 +76,7 @@ class GetStatsAll(Resource):
 
 class GetStatsOne(Resource):
     @marshal_with(stats_fields)
+    @require_authentication
     def get(self, exercise_id):
         try:
             exercise_id = int(exercise_id)

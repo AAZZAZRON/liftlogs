@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse, abort, marshal_with
-from extensions import db
+from extensions import require_authentication
 from models import EntryModel
 from fields import entry_fields
 
@@ -11,6 +11,7 @@ entry_get_args.add_argument("workout_id", type=int, required=False, help="workou
 
 class GetEntries(Resource):
     @marshal_with(entry_fields)
+    @require_authentication
     def get(self):
         entry_args = entry_get_args.parse_args() 
         exercise_id = entry_args.get("exercise_id")

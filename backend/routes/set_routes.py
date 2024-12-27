@@ -1,8 +1,10 @@
 from flask import current_app
 from flask_restful import Resource, reqparse, abort, marshal_with
-from extensions import db
+from extensions import db, require_authentication
 from models import SetModel, EntryModel
 from fields import set_fields
+import os
+from dotenv import load_dotenv
 
 # ----- Reqparser Arguments ----- #
 set_post_args = reqparse.RequestParser()
@@ -19,7 +21,10 @@ set_get_args.add_argument("entry_id", type=int, help="entry_id is required", req
 
 class CreateSet(Resource):
     @marshal_with(set_fields)
+    @require_authentication
     def post(self):
+        load_dotenv()
+        API_KEY = os.environ.get("API_KEY")
         set_args = set_post_args.parse_args()
         exercise_id = set_args.get('exercise_id')
         workout_id = set_args.get('workout_id')
@@ -30,11 +35,11 @@ class CreateSet(Resource):
 
         # Check that exercise and workout are both good
         with current_app.test_client() as client:
-            e_response = client.get(f"exercise/{exercise_id}")
+            e_response = client.get(f"exercise/{exercise_id}", headers={"x-api-key": API_KEY})
             if e_response.status_code != 201:
                 abort(e_response.status_code, description=e_response.json["description"])
             
-            w_response = client.get(f"workouts/{workout_id}")
+            w_response = client.get(f"workouts/{workout_id}", headers={"x-api-key": API_KEY})
             if w_response.status_code != 201:
                 print(w_response.status_code, w_response.json)
                 abort(w_response.status_code, description=w_response.json["description"])
@@ -60,6 +65,7 @@ class CreateSet(Resource):
 
 class GetSets(Resource):
     @marshal_with(set_fields)
+    @require_authentication
     def get(self):
         set_args = set_get_args.parse_args() 
         entry_id = set_args.get("entry_id")

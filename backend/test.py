@@ -1,9 +1,15 @@
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE = 'http://127.0.0.1:5000/'
+API_KEY = os.environ.get("API_KEY")
 
 headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'x-api-key': API_KEY,
 }
 
 def post(url, json={}):
@@ -75,3 +81,4 @@ def GetStats(id='all'):
 # GetEntries({"exercise_id": 1, "workout_id": 1})
 # GetWorkouts(1)
 # GetStats(5)
+# GetStats()
