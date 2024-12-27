@@ -4,17 +4,21 @@ This is the backend server for the Liftlogs project. It is a RESTful API built w
 ## Installation
 1. Clone the repository
 2. Create/activate a virtual environment
-3. Install the dependencies
+3. Add a `.env` file with the following contents:
+```bash
+API_KEY=your_api_key
+```
+4. Install the dependencies
 ```bash
 pip install -r requirements.txt
 ```
-4. Run the flask server
+5. Run the flask server
 ```bash
 python main.py
 ```
 
 ## API Documentation
-All API endpoints require a valid JWT token in the Authorization header. TODO: 
+All API endpoints require a valid api-key in the X-API-KEY header to access. The api-key is stored in a `.env`. 
 
 ### Exercise
 GET `/exercise/all`

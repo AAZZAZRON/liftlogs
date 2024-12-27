@@ -8,11 +8,16 @@ This app is built with React Native. The backend is built with Flask and SQLAlch
 ## Installation
 To run the app locally, you will need to have Node.js and Expo Go installed on your machine.
 1. Clone the repository
-2. Install the dependencies
+2. Add a `.env` file with the following contents:
+```bash
+API_URL=url_to_backend
+API_KEY=your_api_key
+```
+3. Install the dependencies
 ```bash
 npm install
 ```
-3. Start the app in Expo Go
+4. Start the app in Expo Go
 ```bash
 npx expo start --go
 ```
