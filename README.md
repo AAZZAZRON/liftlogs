@@ -1,50 +1,18 @@
-# Welcome to your Expo app 👋
+# Liftlogs
+Liftlogs is personalized workout tracking application that makes it easier to track progressive overload. Users can add exercises, track their sets, reps, and weights for each workout, and add notes to each workout to track how they felt, training notes, etc. 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Liftlogs automatically calculates and displays key performance metrics for each exercise based on the user's data, such as One Rep Max (1RM) and Average Volume per Workout, which is tracked over time to show progress.
 
-## Get started
+This app is built with React Native. The backend is built with Flask and SQLAlchemy, and is hosted on AWS. 
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+## Installation
+To run the app locally, you will need to have Node.js and Expo Go installed on your machine.
+1. Clone the repository
+2. Install the dependencies
 ```bash
-npm run reset-project
+npm install
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+3. Start the app in Expo Go
+```bash
+npx expo start --go
+```
