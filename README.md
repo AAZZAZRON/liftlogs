@@ -5,6 +5,10 @@ Liftlogs automatically calculates and displays key performance metrics for each 
 
 This app is built with React Native. The backend is built with Flask and SQLAlchemy, and is hosted on AWS. 
 
+## Demo
+| ![Home Screen](assets/images/demo/home.jpg) | ![Stats Feature](assets/images/demo/stats.jpg) | ![Add Set to Workout](assets/images/demo/addset.jpg) |
+|---------------------------------------------|-----------------------------------------------|-----------------------------------------------------|
+
 ## Installation
 To run the app locally, you will need to have Node.js and Expo Go installed on your machine.
 1. Clone the repository
