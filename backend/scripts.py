@@ -36,9 +36,9 @@ def build_data(exercises):
 
 
 offset = 60
-workouts = open('instance/workouts.csv', 'w')
-entries = open('instance/entries.csv', 'w')
-sets = open('instance/sets.csv', 'w')
+workouts = open('data/workouts.csv', 'w')
+entries = open('data/entries.csv', 'w')
+sets = open('data/sets.csv', 'w')
 
 # headers
 workouts.write("id,date,completed,start_time,end_time,duration,notes\n")
