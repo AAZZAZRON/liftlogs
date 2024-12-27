@@ -12,7 +12,6 @@ def require_authentication(func):
         load_dotenv()
         API_KEY = os.environ.get("API_KEY")
         api_key = request.headers.get('x-api-key')
-        print(API_KEY, api_key)
         if not api_key:
             abort(400, description="Please provide an API key")
         if api_key != API_KEY:

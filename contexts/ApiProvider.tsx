@@ -25,18 +25,21 @@ export const ApiContextProvider = ({ children }: any) => {
     // API Calling
     const fetchExerciseData = async () => {
         const response = await axios.get(`exercise/all`);
-        setExerciseData(await response.data);
+        if (response) {
+            setExerciseData(response.data);
+        }
     }
 
     const fetchStatsData = async () => {
         const response = await axios.get(`stats/all`);
-        setStatsData(await response.data);
+        if (response) {
+            setStatsData(response.data);
+        }
     }
 
     const fetchApiData = async () => {
         setLoading(true);
         try {
-            console.log("fetching...")
             await fetchExerciseData();
             await fetchStatsData();
         } catch (error) {
@@ -61,7 +64,6 @@ export const ApiContextProvider = ({ children }: any) => {
     const getStat = (id: string) => {
         return statsData.filter((stat: StatObject) => stat.id === Number(id))[0] || null;
     }
-
 
     return (
         <ApiContext.Provider value={{ exerciseData, statsData, loading, reload: fetchApiData, getExercise, getStat, search, setSearch }}>

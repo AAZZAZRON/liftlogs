@@ -10,7 +10,6 @@ import { useApiContext } from '@/contexts/ApiProvider';
 export default function ExerciseList() {
     const apiContext = useApiContext();
     const data = apiContext.exerciseData;
-    const stats = apiContext.statsData;
     const search = apiContext.search;
 
     // filter data from searchbar
@@ -27,7 +26,7 @@ export default function ExerciseList() {
             { filterData(data).length === 0 ? <ThemedText>No exercises...</ThemedText>
             :
                 filterData(data).map((ex: ExerciseObject, id) => {
-                    return <ExerciseListItem key={id} exercise={ex} stat={stats[id] || null}/>
+                    return <ExerciseListItem key={id} id={ex.id} />
                 })
             }
         </ScrollView>
