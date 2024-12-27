@@ -2,13 +2,13 @@ import { Stack } from "expo-router";
 import Colours from "@/constants/Colors";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
 import { WorkoutContextProvider } from "@/contexts/WorkoutProvider";
-import { HomeApiContetProvider } from "@/contexts/HomeApiProvider";
+import { ApiContextProvider } from "@/contexts/ApiProvider";
 
 export default function RootLayout() {
   const params = useGlobalSearchParams();
   
   return (
-    <HomeApiContetProvider>
+    <ApiContextProvider>
       <WorkoutContextProvider>
         <Stack
           screenOptions={{
@@ -31,7 +31,7 @@ export default function RootLayout() {
           />
         </Stack>
       </WorkoutContextProvider>
-    </HomeApiContetProvider>
+    </ApiContextProvider>
   );
 }
 

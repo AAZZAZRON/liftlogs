@@ -5,14 +5,14 @@ import { Alert, Keyboard } from 'react-native';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
 import { useWorkoutContext } from '@/contexts/WorkoutProvider';
-import { useHomeApiContext } from '@/contexts/HomeApiProvider';
+import { useApiContext } from '@/contexts/ApiProvider';
 
 
-export default function AddSetForm({id, reload}: {id: string, reload: () => void}) {
+export default function AddSetForm({id}: {id: string}) {
     const workoutContext = useWorkoutContext();
     const workoutId = workoutContext.workoutId;
-    const apiContext = useHomeApiContext();
-    const homeReload = apiContext.reload;
+    const apiContext = useApiContext();
+    const reload = apiContext.reload;
 
     var defaultValue = {
         exercise_id: id,
@@ -55,7 +55,6 @@ export default function AddSetForm({id, reload}: {id: string, reload: () => void
             Alert.alert(`Error Code ${error.response.status}`, message);
         } finally {
             reload();
-            homeReload();
             setFormData(defaultValue);
         }
     };

@@ -7,14 +7,16 @@ interface ApiContextType {
     statsData: StatObject[],
     loading: boolean,
     reload: Function,
+    getExercise: Function,
+    getStat: Function,
     search: string,
     setSearch: Function,
 }
 
-const HomeApiContext = createContext<ApiContextType | null>(null);
+const ApiContext = createContext<ApiContextType | null>(null);
 
 // Deal with all of the API calling in the background
-export const HomeApiContetProvider = ({ children }: any) => {
+export const ApiContextProvider = ({ children }: any) => {
     const [exerciseData, setExerciseData] = useState([]);
     const [search, setSearch] = useState(""); // Filtered
     const [statsData, setStatsData] = useState([]);
@@ -50,17 +52,28 @@ export const HomeApiContetProvider = ({ children }: any) => {
         fetchApiData();
     }, []);
 
+
+    // get a particular exercise/stat
+    const getExercise = (id: string) => {
+        return exerciseData.filter((exercise: ExerciseObject) => exercise.id === Number(id))[0] || null;
+    }
+
+    const getStat = (id: string) => {
+        return statsData.filter((stat: StatObject) => stat.id === Number(id))[0] || null;
+    }
+
+
     return (
-        <HomeApiContext.Provider value={{ exerciseData, statsData, loading, reload: fetchApiData, search, setSearch }}>
+        <ApiContext.Provider value={{ exerciseData, statsData, loading, reload: fetchApiData, getExercise, getStat, search, setSearch }}>
             { children }
-        </HomeApiContext.Provider>
+        </ApiContext.Provider>
     )
 }
 
-export const useHomeApiContext = () => {
-    const context = useContext(HomeApiContext);
+export const useApiContext = () => {
+    const context = useContext(ApiContext);
     if (!context) {
-      throw new Error("useHomeApi must be used within a HomeApiProvider");
+      throw new Error("useApiContext must be used within a ApiContextProvider");
     }
     return context;
 };

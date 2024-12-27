@@ -3,13 +3,13 @@ import { Modal, TextInput } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { View, Button, Text, TouchableWithoutFeedback, Alert } from 'react-native';
 import axios from 'axios';
-import { useHomeApiContext } from '@/contexts/HomeApiProvider';
+import { useApiContext } from '@/contexts/ApiProvider';
 
 export default function AddExerciseForm({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void}) {
     const [formData, setFormData] = useState({
         name: '',
     });
-    const apiContext = useHomeApiContext();
+    const apiContext = useApiContext();
     const reload = apiContext.reload;
 
     const updateForm = (field: string, value: string) => {

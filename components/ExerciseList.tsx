@@ -4,11 +4,11 @@ import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
 import ExerciseListItem from './ExerciseListItem';
 import { ExerciseObject } from '@/constants/types';
-import { useHomeApiContext } from "@/contexts/HomeApiProvider";
+import { useApiContext } from '@/contexts/ApiProvider';
 
 
 export default function ExerciseList() {
-    const apiContext = useHomeApiContext();
+    const apiContext = useApiContext();
     const data = apiContext.exerciseData;
     const stats = apiContext.statsData;
     const search = apiContext.search;

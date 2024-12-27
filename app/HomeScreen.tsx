@@ -3,10 +3,10 @@ import Colours from "@/constants/Colors";
 import ExerciseList from "@/components/ExerciseList";
 import TopBar from "@/components/TopBar";
 import Loading from "@/components/Loading";
-import { useHomeApiContext } from "@/contexts/HomeApiProvider";
+import { useApiContext } from '@/contexts/ApiProvider';
 
 export default function HomeScreen() {
-    const apiContext = useHomeApiContext();
+    const apiContext = useApiContext();
     const loading = apiContext.loading;
     return (
         loading ? <Loading />

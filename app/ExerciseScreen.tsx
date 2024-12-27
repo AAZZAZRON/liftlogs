@@ -1,56 +1,33 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { View, ScrollView } from "react-native";
-import axios from "axios";
 import { useGlobalSearchParams } from "expo-router/build/hooks";
 import Colours from "@/constants/Colors";
 import AddSetForm from "@/components/AddSetForm";
 import Loading from "@/components/Loading";
-import { EntryObject, StatObject } from "@/constants/types";
+import { EntryObject } from "@/constants/types";
 import EntryItem from "@/components/EntryItem";
 import StatsSection from "@/components/StatsSection";
+import { useApiContext } from '@/contexts/ApiProvider';
 
 
 export default function ExerciseScreen() {
     const params = useGlobalSearchParams();
-    const [data, setData] = useState<{ logs: EntryObject[] } | null>(null);
-    const [stats, setStats] = useState<StatObject | null>(null);
-    const [logs, setLogs] = useState<EntryObject[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const id: string = Array.isArray(params.id) ? params.id[0] : params.id;
 
-    const reload = () => setIsLoading(true);
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            const response = await axios.get(`http://10.0.0.211:5000/stats/${params.id}`);
-            if (response) {
-                setStats(response.data);
-            }
-        }
-
-        const fetchData = async () => {
-            const response = await axios.get(`http://10.0.0.211:5000/exercise/${params.id}`);
-            if (response) {
-                setData(response.data);
-                setLogs(response.data.logs.reverse());
-            }
-        }
-
-        if (isLoading) {
-            fetchStats().catch(console.error);
-            fetchData().catch(console.error);
-            setIsLoading(false);
-        }
-    }, [isLoading]);
+    const apiContext = useApiContext();
+    const loading = apiContext.loading;
+    const data = apiContext.getExercise(id);
+    const stats = apiContext.getStat(id);
+    const logs = data.logs.reverse();
 
     return (
-        isLoading
+        loading
         ?
             <Loading />
         :
             <View style={styles.container}>
-                <AddSetForm id={Array.isArray(params.id) ? params.id[0] : params.id} reload={reload}/>
+                <AddSetForm id={id} />
                 <ScrollView style={styles.cardContainer}>
                     {
                         stats && stats?.shownStats.length !== 0 ? 
@@ -67,7 +44,7 @@ export default function ExerciseScreen() {
                         ? 
                             <ThemedText>You have no logs yet!</ThemedText> 
                         :
-                            logs.map((en: EntryObject, id) => {
+                            logs.map((en: EntryObject, id: any) => {
                                 return <EntryItem key={id} entry={en}/>
                             })
                         }

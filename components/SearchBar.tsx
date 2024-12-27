@@ -1,14 +1,12 @@
 import React from 'react';
-import { useState } from 'react';
 import { SearchBar } from '@rneui/base';
 import Colours from '@/constants/Colors';
-import { useHomeApiContext } from "@/contexts/HomeApiProvider";
-
+import { useApiContext } from '@/contexts/ApiProvider';
 
 // https://reactnativeelements.com/docs/components/searchbar
 
 export default function MySearchBar() {
-    const apiContext = useHomeApiContext();
+    const apiContext = useApiContext();
     const search = apiContext.search;
     const setSearch = apiContext.setSearch;
 
