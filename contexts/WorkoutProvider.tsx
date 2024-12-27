@@ -1,11 +1,11 @@
-import { createContext, useState, Dispatch, SetStateAction } from "react";
+import { createContext, useState, useContext } from "react";
 
 interface WorkoutContextType {
     workoutId: number;
-    setWorkoutId: Dispatch<SetStateAction<number>>;
+    setWorkoutId: Function;
 }
 
-export const WorkoutContext = createContext<WorkoutContextType | null>(null);
+const WorkoutContext = createContext<WorkoutContextType | null>(null);
 
 
 export const WorkoutContextProvider = ({ children }: any) => {
@@ -17,3 +17,11 @@ export const WorkoutContextProvider = ({ children }: any) => {
         </WorkoutContext.Provider>
     )
 }
+
+export const useWorkoutContext = () => {
+    const context = useContext(WorkoutContext);
+    if (!context) {
+      throw new Error("useHomeApi must be used within a HomeApiProvider");
+    }
+    return context;
+};
