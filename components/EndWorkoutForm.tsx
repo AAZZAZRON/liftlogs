@@ -22,7 +22,7 @@ export default function EndWorkoutForm({visible, setVisible}: {visible: boolean,
     const submitForm = async () => {
         setVisible(false);
         try {
-            const response = await axios.post(`http://10.0.0.211:5000/workouts/end`, formData);
+            const response = await axios.post(`workouts/end`, formData);
             if (response) Alert.alert('Workout Ended', '');
         } catch (error: any) {
             Alert.alert(`Error Code ${error.response.status}`, error.response.data.description);

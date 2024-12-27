@@ -17,9 +17,8 @@ export default function ExerciseScreen() {
 
     const apiContext = useApiContext();
     const loading = apiContext.loading;
-    const data = apiContext.getExercise(id);
     const stats = apiContext.getStat(id);
-    const logs = data.logs.reverse();
+    const logs = apiContext.getExercise(id).logs.slice().reverse();
 
     return (
         loading

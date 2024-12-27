@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import Colours from '../constants/Colors';
-import { EntryObject, ExerciseObject, SetObject, StatObject } from '@/constants/types';
+import { ExerciseObject, EntryObject, SetObject, StatObject } from '@/constants/types';
 import { useRouter } from 'expo-router';
+import { useApiContext } from '@/contexts/ApiProvider';
 
 function parseEntry(entry: EntryObject): string {
     let s = entry.date.toString().substring(5).replace('-', '/');
@@ -11,13 +12,14 @@ function parseEntry(entry: EntryObject): string {
     return s + ' - ' + arr.join(", ");
 }
 
-export default function ExerciseListItem({ exercise, stat }: { exercise: ExerciseObject, stat: StatObject }) {
+export default function ExerciseListItem({ id }: { id: number }) {
     const router = useRouter();
-    const [firstEntries, setFirstEntries] = useState<EntryObject[]>();
+    const apiContext = useApiContext();
+    const exercise: ExerciseObject = apiContext.getExercise(id);
+    const logs = apiContext.getExercise(id).logs.slice().reverse();
+    const stat = apiContext.getStat(id);
 
-    useEffect(() => {
-        if (exercise.logs) setFirstEntries(exercise.logs.reverse().slice(0, 3));
-    }, []);
+    if (id == 1) console.log(logs);
 
     return (
         <TouchableOpacity onPress={() => router.push({pathname: `/ExerciseScreen`, params: {name: exercise.name, id: exercise.id}})}>
@@ -27,8 +29,8 @@ export default function ExerciseListItem({ exercise, stat }: { exercise: Exercis
             <View style={styles.left}>
                 <ThemedText type="title">{exercise.name}</ThemedText>
                 {
-                    (firstEntries !== undefined) ? 
-                        (firstEntries.map((entry: EntryObject, id) => {
+                    (logs !== undefined) ? 
+                        (logs.slice(0, 3).map((entry: EntryObject, id: number) => {
                             return <ThemedText type='default' key={id}>{parseEntry(entry)}</ThemedText>
                         }))
                     : <ThemedText type='default'>No logs yet...</ThemedText>
