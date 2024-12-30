@@ -1,4 +1,5 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 interface WorkoutContextType {
     workoutId: number;
@@ -7,9 +8,19 @@ interface WorkoutContextType {
 
 const WorkoutContext = createContext<WorkoutContextType | null>(null);
 
-
 export const WorkoutContextProvider = ({ children }: any) => {
     const [workoutId, setWorkoutId] = useState(-1);
+
+    const fetchWorkoutId = async () => {
+        const response = await axios.get(`workouts/uncompleted`);
+        if (response) {
+            setWorkoutId(response.data.id);
+        }
+    }
+
+    useEffect(() => {   
+        fetchWorkoutId();
+    }, []);
 
     return (
         <WorkoutContext.Provider value={{ workoutId, setWorkoutId }}>

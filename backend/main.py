@@ -30,6 +30,7 @@ api.add_resource(CreateExercise, "/exercise/create")
 api.add_resource(StartWorkout, "/workouts/start")
 api.add_resource(EndWorkout, "/workouts/end")
 api.add_resource(GetWorkout, "/workouts/<workout_id>")
+api.add_resource(GetUncompletedWorkoutId, "/workouts/uncompleted")
 
 api.add_resource(GetEntries, "/entries")
 
