@@ -66,7 +66,7 @@ def GetStats(id='all'):
 # GetExercise(1)
 # StartWorkout()
 # EndWorkout(2)
-# GetWorkouts()
+# GetWorkouts("uncompleted")
 # GetWorkouts(2)
 # GetEntries({"exercise_id": 1, "workout_id": 1})
 # AddSet(5, 1, 10, 85, "lbs")

@@ -14,6 +14,10 @@ class StartWorkout(Resource):
     @marshal_with(workout_fields)
     @require_authentication
     def post(self):
+        # Can only start one workout at a time
+        not_completed_workouts = WorkoutModel.query.filter_by(completed=0).all()
+        if not_completed_workouts:
+            abort(400, description="You can only start one workout at a time.")
         workout = WorkoutModel()
         db.session.add(workout)
         db.session.commit()
@@ -61,3 +65,12 @@ class GetWorkout(Resource):
             abort(404, description="Workout does not exist")
 
         return result, 201
+    
+
+class GetUncompletedWorkoutId(Resource):
+    @require_authentication
+    def get(self):
+        uncompleted_workouts = WorkoutModel.query.filter_by(completed=0).first()
+        if uncompleted_workouts:
+            return {"id": uncompleted_workouts.id}, 201
+        return {"id": -1}, 201
