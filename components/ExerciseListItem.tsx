@@ -19,8 +19,6 @@ export default function ExerciseListItem({ id }: { id: number }) {
     const logs = apiContext.getExercise(id).logs.slice().reverse();
     const stat = apiContext.getStat(id);
 
-    if (id == 1) console.log(logs);
-
     return (
         <TouchableOpacity onPress={() => router.push({pathname: `/ExerciseScreen`, params: {name: exercise.name, id: exercise.id}})}>
             <View
