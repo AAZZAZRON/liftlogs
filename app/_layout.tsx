@@ -4,11 +4,12 @@ import { useGlobalSearchParams } from "expo-router/build/hooks";
 import { WorkoutContextProvider } from "@/contexts/WorkoutProvider";
 import { ApiContextProvider } from "@/contexts/ApiProvider";
 import axios from "axios";
+import { API_URL, API_KEY } from '@env';
 
 export default function RootLayout() {
   const params = useGlobalSearchParams();
-  axios.defaults.baseURL = process.env.EXPO_PUBLIC_API_URL;
-  axios.defaults.headers.common['x-api-key'] = process.env.EXPO_PUBLIC_API_KEY;
+  axios.defaults.baseURL = API_URL;
+  axios.defaults.headers.common['x-api-key'] = API_KEY;
 
   return (
     <ApiContextProvider>
